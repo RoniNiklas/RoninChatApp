@@ -13,7 +13,6 @@ const ConversationItem = (props) => {
                     Description:
                     {props.conversation.description}
                 </div>
-
             </div>
             <div className="card-footer" style={{ position: "absolute", bottom: 0, width: "100%" }} >
                 <Link to={"/conversations/" + props.conversation.id}> <Button variant="primary">Open Conversation</Button> </Link>

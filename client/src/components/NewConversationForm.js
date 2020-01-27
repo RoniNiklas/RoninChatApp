@@ -21,7 +21,7 @@ const NewConversationForm = () => {
 
     const handleClose = () => {
         setShow(false)
-        history.push("/")
+        history.goBack()
     }
 
     return (
