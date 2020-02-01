@@ -4,7 +4,7 @@ import ConversationList from './components/ConversationList'
 import NewConversationForm from './components/NewConversationForm'
 import ConversationView from './components/ConversationView'
 import Menu from './components/Menu'
-import { Route, Link, Redirect } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
 const App = () => {
   return (

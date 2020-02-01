@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Spinner from 'react-bootstrap/Spinner'
+import Spinner from './Spinner'
 import Form from 'react-bootstrap/Form'
 import Button from "react-bootstrap/Button"
 import Alert from "react-bootstrap/Alert"
@@ -11,7 +11,6 @@ const ConversationView = (props) => {
     const [conversation, setConversation] = useState({})
     const [messages, setMessages] = useImmer([])
     const [id] = useState(props.match.params.id)
-    const [count, setCount] = useState(0)
     const [error, setError] = useState("")
     const [comment, setComment] = useState("")
     const [socket, setSocket] = useState(null)
@@ -51,7 +50,7 @@ const ConversationView = (props) => {
             openedSocket.emit("LEAVE_ROOM", id)
             openedSocket.disconnect()
         }
-    }, [count])
+    }, [])
 
 
     const sendComment = (event) => {
@@ -71,13 +70,9 @@ const ConversationView = (props) => {
                             })}
                         </div>
                         :
-                        <Spinner animation="border" role="status">
-                            <span className="sr-only">Loading...</span>
-                        </Spinner>
-
+                        <Spinner />
                     }
                 </div>
-
                 <Form data-testid='addForm' onSubmit={(event) => sendComment(event)} className='comment-form'>
                     <Form.Group>
                         <Form.Label>Your Comment</Form.Label>
