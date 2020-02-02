@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import ConversationList from './components/ConversationList'
-import NewConversationForm from './components/NewConversationForm'
-import ConversationView from './components/ConversationView'
-import Menu from './components/Menu'
+import ConversationList from './components/ConversationList/ConversationList'
+import NewConversationForm from './components/Menu/NewConversationForm'
+import ConversationView from './components/ConversationView/ConversationView'
+import Menu from './components/Menu/Menu'
 import { Route } from 'react-router-dom'
 
 const App = () => {

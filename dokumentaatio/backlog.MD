@@ -1,0 +1,26 @@
+1. Keskustelunäkymän muuttaminen käyttökelpoiseksi
+    - viestit päällekkäin
+    - kommenttikenttä fixed ruudun alareunassa
+    - kommenttikenttä ei mene viestien päälle, vaan viestit rullautuvat sen yläpuolella
+    - näkyviin viestien lähettäjän nimi
+        - viestit objektina {name: String, text: String}
+    - kauniimmat viestit (nimi ja viesti selvästi erillään)
+    - keskustelun osaanottajat näkyvissä esim vasemmassa laidassa?
+2. Kirjautuminen
+    - käyttäjä voi kirjautua
+    - voi luoda käyttäjän
+    - voi muuttaa tietojaan
+    - voi poistaa käyttäjän
+3. Fullstack muutos viestien ja kuvien irrottamiseen keskusteluista
+    - erillinen taulu kuville, erillinen taulu viesteille
+        -  kuviin keskustelun id, jotta voi hakea
+        -  viesteihin keskustelun id, jotta voi hakea
+    - taulujen indeksöinti 
+    - tällöin voi myös luoda kuvattomia näkymiä, jotta ei täydy ladata 200mb kuvia, jotta saa keskustelut listattua
+    - eikä tarvi ladata viestejä pelkästään conversation listin takia
+4. Väriskaalan muutos
+    - Tumma sävy defaulttina
+    - nappula, joka sallii sävymuutoksen vaalean ja tumman sävyn välillä
+        - reduxin käyttöönotto sitä varten
+5. Ulkoasun muutos
+    - etenkin carousel on helvetin ruma :((

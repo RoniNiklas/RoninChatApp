@@ -10,7 +10,7 @@ const config = require('./config.js')
 app.use(express.static(config.staticDir))
 app.use(cors())
 
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '10mb', extended: true}))
 app.use('/api/conversations', conversationRouter)
 
 app.get('/*', (req, res) => {

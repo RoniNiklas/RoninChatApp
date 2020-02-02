@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import conversationService from '../services/conversation'
+import conversationService from '../../services/conversation'
 import ConversationListItem from './ConversationListItem'
-import Spinner from './Spinner'
+import Spinner from '../Spinner'
 import ConversationCarousel from './ConversationCarousel'
 
 const ConversationList = () => {
@@ -14,7 +14,7 @@ const ConversationList = () => {
             setLoading(true)
             const fetched = await conversationService.getAll()
             setConversations(fetched)
-            setPopularConversations(fetched.sort((conversationA, conversationB) => conversationA.messages.length - conversationB.messages.length).slice(0, 10))
+            setPopularConversations(Array.from(fetched).sort((conversationA, conversationB) => conversationB.messages.length - conversationA.messages.length ).slice(0, 10))
             setLoading(false)
         }
         fetchData()
@@ -25,6 +25,7 @@ const ConversationList = () => {
             <div className="container">
                 <div className="row" style={{ width: "100%", textAlign: "center" }} >
                     <div className="col-sm">
+                        <h2>Popular Conversations</h2>
                         {loading ?
                             <Spinner />
                             :
@@ -36,6 +37,7 @@ const ConversationList = () => {
                 </div>
                 <div className="row" style={{ width: "100%", textAlign: "center" }} >
                     <div className="col-sm">
+                        <h2>All Conversations</h2>
                         {loading ?
                             <Spinner />
                             :

@@ -3,9 +3,9 @@ import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/Button"
 import Alert from "react-bootstrap/Alert"
 import Form from "react-bootstrap/Form"
-import conversationService from '../services/conversation'
+import conversationService from '../../services/conversation'
 import { useHistory } from 'react-router-dom'
-import Spinner from './Spinner'
+import Spinner from '../Spinner'
 
 const NewConversationForm = () => {
     const [show, setShow] = useState(true)
