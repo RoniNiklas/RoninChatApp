@@ -10,7 +10,7 @@ mongoose
         console.log("connected to database", config.dbUrl)
     })
     .catch((err) => {
-        console.log(err)
+        console.log("couldnt connect to database: " + config.dbUrl + " because of : " + err)
     })
 
 const server = http.createServer(app)
