@@ -3,6 +3,10 @@
 # Sovelluksen kuvaus:
 Tavoitteena websovellus, jolla käyttäjät voivat viestiä toistensa kanssa reaaliaikaisesti websockettia käyttäen. Teknologioina Node.JS, React, MongoDB, socket.io ja bootstrap.
 
+# Herokussa käytettävissä  
+
+[http://roninchatapp.herokuapp.com/](http://roninchatapp.herokuapp.com/) 
+
 # Dokumentaatio  
 [tyoaikakirjanpito](https://github.com/RoniNiklas/RoninChatApp/blob/master/dokumentaatio/ty%C3%B6aikakirjanpito.MD)  
 [backlog/todo](https://github.com/RoniNiklas/RoninChatApp/blob/master/dokumentaatio/backlog.MD)  
