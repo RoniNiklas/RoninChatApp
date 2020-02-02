@@ -7,10 +7,10 @@ const Conversation = require('./models/conversation')
 mongoose
     .connect(config.dbUrl)
     .then(() => {
-        console.log("connected to database", config.dbUrl)
+        console.log("connected to database")
     })
     .catch((err) => {
-        console.log("couldnt connect to database: " + config.dbUrl + " because of : " + err)
+        console.log("couldn't connect to database")
     })
 
 const server = http.createServer(app)
