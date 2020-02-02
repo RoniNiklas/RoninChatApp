@@ -50,8 +50,6 @@ const ConversationView = (props) => {
             openConnection()
         }
 
-        goToLast()
-
         return function cleanup() {
             openedSocket.emit("LEAVE_ROOM", id)
             openedSocket.disconnect()

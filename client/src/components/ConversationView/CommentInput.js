@@ -34,7 +34,7 @@ const CommentInput = ({ setError, goToLast, propsId, socket }) => {
         <>
             <div className="row" >
                 <div className="col" className="col" style={{ background: "white", position: "fixed", bottom: 0, width: "100%" }} >
-                    <Card style={{ background: "white", position: "fixed", bottom: 0, left: 0, right: 0, width: "100%" }} >
+                    <Card style={{ background: "white", padding:10, position: "fixed", bottom: 0, left: 0, right: 0, width: "100%" }} >
                         <Form onSubmit={(event) => sendComment(event)} className='comment-form'>
                             <Form.Row >
                                 <Form.Group as={Col} sm="3" style={{ marginLeft: "auto", marginRight: "auto" }} >
