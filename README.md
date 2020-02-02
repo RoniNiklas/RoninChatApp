@@ -5,7 +5,7 @@ Tavoitteena websovellus, jolla käyttäjät voivat viestiä toistensa kanssa rea
 
 # Herokussa käytettävissä  
 
-[http://roninchatapp.herokuapp.com/](http://roninchatapp.herokuapp.com/) 
+[https://roninchatapp.herokuapp.com/](https://roninchatapp.herokuapp.com/) 
 
 # Dokumentaatio  
 [tyoaikakirjanpito](https://github.com/RoniNiklas/RoninChatApp/blob/master/dokumentaatio/ty%C3%B6aikakirjanpito.MD)  
