@@ -15,7 +15,7 @@ const SingleMessage = ({ message }) => {
         <Toast style={{margin:"auto", marginTop:10}}>
             <Toast.Header closeButton={false}>
                 <strong className="mr-auto">{message.name}</strong>
-                <small>{hour + ":" + minutes + " " + day + "/" + month + "/" + year}</small>
+                <small>{day + "/" + month + "/" + year + " " + hour + ":" + minutes}</small>
             </Toast.Header>
             <Toast.Body>{message.text}</Toast.Body>
         </Toast>

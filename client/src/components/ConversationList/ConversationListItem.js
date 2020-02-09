@@ -8,11 +8,11 @@ const ConversationItem = ({ conversation }) => {
             <div id="all">
                 <div className="view view-first">
                     <Link to={"/conversations/" + conversation.id}>
-                        <img src={conversation.image} />
+                        <img src={conversation.image} alt="Conversation image" />
                         <div className="mask">
                             <h2>{conversation.title}</h2>
                             <p>{conversation.description}</p>
-                            <a className="info">Join</a>
+                            <p className="info">Join</p>
                         </div>
                     </Link>
                 </div>

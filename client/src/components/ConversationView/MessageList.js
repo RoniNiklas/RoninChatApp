@@ -5,8 +5,8 @@ const MessageList = ({messages}) => {
     return (
         <>
             <div style={{ position: "sticky", padding: 10 }} >
-                {messages.map(message => {
-                    return (<SingleMessage message={message} />)
+                {messages.map((message, index) => {
+                    return (<SingleMessage key={index}message={message} />)
                 })}
             </div>
         </>

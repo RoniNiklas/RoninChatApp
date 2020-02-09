@@ -28,15 +28,12 @@ const ConversationView = (props) => {
             openedSocket.connect()
             openedSocket.emit("JOIN_ROOM", id)
             openedSocket.on("SET_CONVERSATION", (newConversation) => {
-                console.log("SETTING CONVERSATION", newConversation)
-                console.log("SETTING CONVERSATION MESSAGES", newConversation.messages)
                 setConversation(newConversation)
                 setMessages(draft => {
                     newConversation.messages.map(msg => draft.push(msg))
                 })
             })
             openedSocket.on("UPDATE_CONVERSATION", (newComment) => {
-                console.log("UPDATING CONVERSATION", newComment)
                 setMessages(draft => {
                     draft.push(newComment)
                 })
@@ -64,10 +61,18 @@ const ConversationView = (props) => {
         <>
             <div className="container" style={{ textAlign: "left" }}>
                 <div className="row" >
-                    <div className="col" style={{ width: "100%", margin: "auto" }}>
-                        <h5 style={{ width: "100%", margin: "auto" }}>{conversation.title}</h5>
+                    <div className="col" style={{ width: "100%"}}>
+                        <h2 style={{ width: "100%", margin: "30px", textAlign: "center" }}>
+                            {conversation.title}
+                        </h2>
                         <Button onClick={goToLast}>Go to last</Button>
-                        {error ? <Alert variant='danger' style={{ position: "fixed", top: 0, left: 0, right: 0 }}>{error}</Alert> : null}
+                        {error
+                            ?
+                            <Alert variant='danger' style={{ position: "fixed", top: 0, left: 0, right: 0 }}>
+                                {error}
+                            </Alert>
+                            : null
+                        }
                         <div ref={top} style={{ visibility: "hidden", height: "1px", float: "left", clear: "both" }} />
                         {messages
                             ? <MessageList messages={messages} />
