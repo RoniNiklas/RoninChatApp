@@ -23,4 +23,4 @@
     - nappula, joka sallii sävymuutoksen vaalean ja tumman sävyn välillä
         - reduxin käyttöönotto sitä varten
 5. Ulkoasun muutos
-    - etenkin carousel on helvetin ruma :((
+    - etenkin carousel on melko ruma :((
