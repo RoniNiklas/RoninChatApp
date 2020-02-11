@@ -23,4 +23,8 @@
     - nappula, joka sallii sävymuutoksen vaalean ja tumman sävyn välillä
         - reduxin käyttöönotto sitä varten mahdollisesti
 5. Ulkoasun muutos
+<<<<<<< HEAD
     - melko ruma atm
+=======
+    - etenkin carousel on melko ruma :((
+>>>>>>> 20eb3bb5d3cc9ef9fc00fc2e3981cc891d3a2c69
