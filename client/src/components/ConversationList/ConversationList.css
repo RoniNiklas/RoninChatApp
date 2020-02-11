@@ -1,0 +1,10 @@
+.conversation-list {
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.list-header {
+    text-align: center;
+    margin: 30px;
+}

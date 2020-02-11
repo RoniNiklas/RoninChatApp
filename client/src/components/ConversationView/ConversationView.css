@@ -1,0 +1,17 @@
+.sidebar-and-messages {
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.invisible { 
+    visibility: hidden;
+    height: 1px; 
+    float: left;
+    clear: both;
+}
+
+.conversation-view-error {
+    position: sticky;
+    top: 3em;
+    z-index: 1;
+}

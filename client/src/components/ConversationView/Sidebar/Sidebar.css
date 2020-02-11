@@ -1,0 +1,25 @@
+.sidebar-image {
+    max-height: 280px;
+    object-fit: scale-down
+}
+
+.sidebar-item {
+    padding:10px;
+}
+
+.sidebar-header {
+    font-weight: bold;
+    font-size: 21px;
+    overflow: auto;
+    text-align:center;
+    background: none !important; 
+  }
+  
+.sidebar-description {
+    max-height: 60px;
+    overflow: auto;
+    margin: 1em 1em;
+    padding: 0.25em 0.25em;
+    border-color: grey;
+    flex-grow: 1;
+  }

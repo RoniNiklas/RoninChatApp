@@ -2,10 +2,11 @@ import React from "react"
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import { Link } from 'react-router-dom'
+import "./Menu.css"
 
 const Menu = () => {
     return (
-        <Navbar collapseOnSelect bg="light" expand="lg">
+        <Navbar className="menu" collapseOnSelect bg="light" expand="lg">
             <Navbar.Brand as={Link} href='#' to='/'>Ronin ChatApp</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">

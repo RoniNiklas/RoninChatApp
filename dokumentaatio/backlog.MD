@@ -1,11 +1,11 @@
 1. Keskustelunäkymän muuttaminen käyttökelpoiseksi
-    - viestit päällekkäin
-    - kommenttikenttä fixed ruudun alareunassa
-    - kommenttikenttä ei mene viestien päälle, vaan viestit rullautuvat sen yläpuolella
-    - näkyviin viestien lähettäjän nimi
-        - viestit objektina {name: String, text: String}
+    - viestit päällekkäin DONE
+    - kommenttikenttä fixed ruudun alareunassa DONE
+    - kommenttikenttä ei mene viestien päälle, vaan viestit rullautuvat sen yläpuolella MELKEIN DONE
+    - näkyviin viestien lähettäjän nimi DONE
+        - viestit objektina {name: String, text: String, date}
     - kauniimmat viestit (nimi ja viesti selvästi erillään)
-    - keskustelun osaanottajat näkyvissä esim vasemmassa laidassa?
+    - keskustelun osaanottajat näkyvissä esim vasemmassa laidassa
 2. Kirjautuminen
     - käyttäjä voi kirjautua
     - voi luoda käyttäjän
@@ -21,6 +21,6 @@
 4. Väriskaalan muutos
     - Tumma sävy defaulttina
     - nappula, joka sallii sävymuutoksen vaalean ja tumman sävyn välillä
-        - reduxin käyttöönotto sitä varten
+        - reduxin käyttöönotto sitä varten mahdollisesti
 5. Ulkoasun muutos
-    - etenkin carousel on helvetin ruma :((
+    - melko ruma atm

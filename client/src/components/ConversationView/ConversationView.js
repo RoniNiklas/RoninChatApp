@@ -3,10 +3,11 @@ import openSocket from "socket.io-client"
 import { useImmer } from 'use-immer'
 import Alert from "react-bootstrap/Alert"
 import Button from "react-bootstrap/Button"
-import Spinner from '../Spinner'
-import CommentInput from './CommentInput'
-import MessageList from "./MessageList"
+import Sidebar from "./Sidebar/Sidebar"
+import CommentInput from './CommentInput/CommentInput'
+import MessageList from "./MessageList/MessageList"
 import useWindowDimensions from '../../utils/useWindowDimensions'
+import "./ConversationView.css"
 
 
 const ConversationView = (props) => {
@@ -59,33 +60,23 @@ const ConversationView = (props) => {
 
     return (
         <>
-            <div className="container" style={{ textAlign: "left" }}>
-                <div className="row" >
-                    <div className="col" style={{ width: "100%"}}>
-                        <h2 style={{ width: "100%", margin: "30px", textAlign: "center" }}>
-                            {conversation.title}
-                        </h2>
-                        <Button onClick={goToLast}>Go to last</Button>
-                        {error
-                            ?
-                            <Alert variant='danger' style={{ position: "fixed", top: 0, left: 0, right: 0 }}>
-                                {error}
-                            </Alert>
-                            : null
-                        }
-                        <div ref={top} style={{ visibility: "hidden", height: "1px", float: "left", clear: "both" }} />
-                        {messages
-                            ? <MessageList messages={messages} />
-                            : <Spinner />
-                        }
-                        <div ref={bottom} style={{ visibility: "hidden", height: "1px", float: "left", clear: "both" }} />
-                        <Button onClick={goToTop}>Go to top</Button>
+            {error && <Alert variant='danger' className="conversation-view-error">{error}</Alert>}
+            <div className="conversation-view">
+                <div className="sidebar-and-messages">
+                    <Sidebar conversation={conversation} goToTop={goToTop} goToLast={goToLast} width={width} />
+                    <div
+                        className="messages"
+                        style={{
+                            marginBottom: (width > 720 ? height / 4 + "px" : height / 3 + "px")
+                        }}
+                    >
+                        <div ref={top} className="invisible" />
+                        <MessageList messages={messages} width={width} />
+                        <div ref={bottom} className="invisible" />
                     </div>
                 </div>
-            </div>
-            <div className="container" style={{ maxHeight: (height / 3.5), height: (height / 3.5) }}>
                 <CommentInput setError={setError} goToLast={goToLast} propsId={id} socket={socket} />
-            </div >
+            </div>
         </>
     )
 }

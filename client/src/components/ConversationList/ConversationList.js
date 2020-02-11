@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import conversationService from '../../services/conversation'
-import ConversationListItem from './ConversationListItem'
+import ConversationListItem from './ConversationListItem/ConversationListItem'
 import Spinner from '../Spinner'
+import "./ConversationList.css"
 
 const ConversationList = () => {
     const [conversations, setConversations] = useState()
-    const [popularConversations, setPopularConversations] = useState([])
+    const [popularConversations, setPopularConversations] = useState()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -18,19 +19,15 @@ const ConversationList = () => {
 
     return (
         <>
-            <div className="container">
-                <div className="row" style={{ width: "100%", textAlign: "center" }} >
-                    <div className="col-sm">
-                        <h2 style={{margin:"30px"}}>All Conversations</h2>
-                        {conversations ?
-                            <div>
-                                {conversations.map(conversation => <ConversationListItem key={conversation.id} conversation={conversation} />)}
-                            </div>
-                            :
-                            <Spinner />
-                        }
-                    </div>
-                </div>
+            <h2 className="list-header">All Conversations</h2>
+            <div className="conversation-list">
+                {conversations ?
+                    <>
+                        {conversations.map(conversation => <ConversationListItem key={conversation.id} conversation={conversation} />)}
+                    </>
+                    :
+                    <Spinner />
+                }
             </div>
         </>
     )

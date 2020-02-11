@@ -3,7 +3,7 @@ import React from 'react'
 
 const SpinnerToExport = () => {
     return (
-        <Spinner animation="border" role="status">
+        <Spinner className="spinner" animation="border" role="status">
             <span className="sr-only">Loading...</span>
         </Spinner>
     )

@@ -1,0 +1,35 @@
+.conversation-item {
+  width:180px;
+  height:210px;
+  max-height: 210px;
+  margin: 10px;
+  border-color: gray;
+}
+a {
+  text-decoration: none !important;
+}
+
+.conversation-item:hover {
+  box-shadow: 0 0 5px #000;
+}
+
+.image {
+  height:150px;
+  object-fit: cover;
+  border-color: grey;
+}
+
+.card-header {
+  font-weight: bold;
+  font-size: 14px;
+  overflow: auto;
+  text-align:center;
+}
+.description {
+  max-height: 60px;
+  overflow: auto;
+  margin: 1em 1em;
+  padding: 0.25em 0.25em;
+  border-color: grey;
+  flex-grow: 1;
+}

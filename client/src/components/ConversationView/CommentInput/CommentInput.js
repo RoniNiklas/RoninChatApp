@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Col from "react-bootstrap/Col"
 import Card from "react-bootstrap/Card"
 import InputGroup from "react-bootstrap/InputGroup"
@@ -12,29 +12,31 @@ const CommentInput = ({ setError, goToLast, propsId, socket }) => {
 
     const sendComment = (event) => {
         event.preventDefault()
-        verifyComment()
-            ? acceptComment()
+        const trimmedComment = comment.trim()
+        const trimmedSender = sender.trim()
+        verifyComment(trimmedComment, trimmedSender)
+            ? acceptComment(trimmedComment, trimmedSender)
             : rejectComment()
     }
-    const verifyComment = () => {
-        return (sender && comment)
+    const verifyComment = (trimmedComment, trimmedSender) => {
+        return (trimmedComment && trimmedSender)
     }
-    const acceptComment = () => {
-        socket.emit("POST_COMMENT", id, { name: sender, text: comment, date: Date.now() })
+    const acceptComment = (trimmedComment, trimmedSender) => {
+        socket.emit("POST_COMMENT", id, { text: trimmedComment, name: trimmedSender, date: Date.now() })
         setComment("")
         setError("")
         goToLast()
     }
 
     const rejectComment = () => {
-        setError("Comment can't be empty")
+        setError("Neither the comment or the username can be empty")
     }
 
     return (
         <>
             <div className="row" >
                 <div className="col" className="col" style={{ background: "white", position: "fixed", bottom: 0, width: "100%" }} >
-                    <Card style={{ background: "white", padding:10, position: "fixed", bottom: 0, left: 0, right: 0, width: "100%" }} >
+                    <Card style={{ background: "white", padding: 10, position: "fixed", bottom: 0, left: 0, right: 0, width: "100%" }} >
                         <Form onSubmit={(event) => sendComment(event)} className='comment-form'>
                             <Form.Row >
                                 <Form.Group as={Col} sm="3" style={{ marginLeft: "auto", marginRight: "auto" }} >
@@ -57,7 +59,14 @@ const CommentInput = ({ setError, goToLast, propsId, socket }) => {
                                         as="textarea"
                                         type='text'
                                         value={comment}
-                                        onChange={(event) => setComment(event.target.value)} />
+                                        onChange={(event) => setComment(event.target.value)}
+                                        required 
+                                        onKeyPress={(event) => {
+                                            if (event.key === 'Enter') {
+                                                sendComment(event)
+                                            }
+                                        }}
+                                        />
                                     <Button type="submit">Send comment</Button>
                                 </Form.Group>
                             </Form.Row>

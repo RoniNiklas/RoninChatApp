@@ -34,7 +34,7 @@ io.on("connection", (socket) => {
                 return socket.local.emit("SET_CONVERSATION", conversation)
             } else {
                 console.log("Socket: " + socket.request.connection.remoteAddress + " unsuccessfully tried to join room:" + id)
-                return socket.local.emit("SET_ERROR", "No conversation with such Id")
+                return socket.local.emit("SET_ERROR", "No conversation with this id found")
             }
         } catch (error) {
             console.log("error: ", error)
