@@ -8,7 +8,7 @@
     "start": "node server/index.js",
     "watch": "nodemon server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd client && yarn run build"
+    "build": "cd client && yarn install && yarn run build"
   },
   "keywords": [],
   "author": "",
