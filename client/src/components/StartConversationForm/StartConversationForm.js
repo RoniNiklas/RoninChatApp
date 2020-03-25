@@ -5,10 +5,9 @@ import Alert from "react-bootstrap/Alert"
 import Form from "react-bootstrap/Form"
 import conversationService from '../../services/conversation'
 import { useHistory } from 'react-router-dom'
-import Spinner from '../Spinner'
+import Spinner from '../Spinner/Spinner'
 
-const NewConversationForm = () => {
-    const [show, setShow] = useState(true)
+const NewConversationForm = ({ showModal, setShowModal }) => {
     const [error, setError] = useState("")
     const [title, setTitle] = useState("")
     const [loading, setLoading] = useState(false)
@@ -34,8 +33,7 @@ const NewConversationForm = () => {
     }
 
     const handleClose = () => {
-        setShow(false)
-        history.goBack()
+        setShowModal(false)
     }
 
     const getUploadedFile = async (event) => {
@@ -78,7 +76,7 @@ const NewConversationForm = () => {
 
     return (
         <>
-            <Modal show={show} onHide={handleClose} animation={false}>
+            <Modal show={showModal} onHide={handleClose} animation={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Create a new conversation</Modal.Title>
                 </Modal.Header>
@@ -112,7 +110,7 @@ const NewConversationForm = () => {
                                 Close
                             </Button>
                             <Button variant="primary" onClick={postConversation}>
-                                Save Changes
+                                Create
                             </Button>
                         </Modal.Footer>
                     </>

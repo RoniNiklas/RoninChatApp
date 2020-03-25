@@ -6,7 +6,10 @@ const conversationSchema = new mongoose.Schema({
     key: String,
     messages: [],
     description: String,
-    title: String,
+    title: {
+      type: String,
+      unique: true
+    },
     image: String,
     permanent: Boolean,
     public: Boolean,

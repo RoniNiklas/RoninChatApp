@@ -1,8 +1,11 @@
 #root {
-    background-color:bisque;
+    background-color:white;
     min-height:100vh;
     height:100%;
 }
 .spinner {
     text-align:center;
+}
+
+.app-wrapper {
 }

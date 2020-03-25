@@ -1,0 +1,27 @@
+.carousel {
+    height: 60vh;
+    max-width: 1280px;
+    margin:auto;
+    margin-top: 1em;
+    object-fit: cover;
+}
+
+.carousel-inner {
+    height: 60vh;
+    max-width: 1280px;
+    margin:auto;
+    margin-top: 1em;
+    object-fit: cover;
+}
+
+.d-block {
+    height: 60vh;
+    max-width: 1280px;
+    margin:auto;
+    margin-top: 1em;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    background: rgba(0,0,0,0.5)
+}

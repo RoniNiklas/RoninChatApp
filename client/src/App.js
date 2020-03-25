@@ -1,18 +1,21 @@
-import React from 'react';
-import './App.css';
-import ConversationList from './components/ConversationList/ConversationList'
-import NewConversationForm from './components/Menu/NewConversationForm'
+import React from 'react'
+import Front from './components/Front/Front'
 import ConversationView from './components/ConversationView/ConversationView'
-import Menu from './components/Menu/Menu'
+import ConversationList from './components/ConversationList/ConversationList'
+import Menu from "./components/Menu/Menu"
+import useWindowDimensions from "./utils/useWindowDimensions"
 import { Route } from 'react-router-dom'
 
+import './App.css'
+
 const App = () => {
+  const { height, width } = useWindowDimensions();
   return (
-    <div id="AppWrapper" className="App">
-      <Menu/ >
-      <Route exact path="/" component={ConversationList}/>
-      <Route exact path="/newConversation" component={NewConversationForm}/>
-      <Route exact path="/conversations/:id" component={ConversationView}/>
+    <div id="app-wrapper" className="app-wrapper">
+      <Menu />
+      <Route exact path="/" component={Front} />
+      <Route exact path="/list/" component={ConversationList} />
+      <Route exact path="/conversations/:id" component={ConversationView} />
     </div>
   );
 }

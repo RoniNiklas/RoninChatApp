@@ -16,7 +16,7 @@ const ConversationView = (props) => {
     const [id] = useState(props.match.params.id)
     const [error, setError] = useState("")
     const [socket, setSocket] = useState(null)
-    const { height, width } = useWindowDimensions();
+    const { height, width } = useWindowDimensions()
     const bottom = useRef(null)
     const top = useRef(null)
 
@@ -48,7 +48,7 @@ const ConversationView = (props) => {
             openConnection()
         }
 
-        return function cleanup() {
+        return () => {
             openedSocket.emit("LEAVE_ROOM", id)
             openedSocket.disconnect()
         }
@@ -57,6 +57,7 @@ const ConversationView = (props) => {
     const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop)
     const goToLast = () => scrollToRef(bottom)
     const goToTop = () => scrollToRef(top)
+    
 
     return (
         <>

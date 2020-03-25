@@ -15,4 +15,9 @@ const getOne = async (id) => {
     return response.data
 }
 
-export default { getAll, add, getOne }
+const autocomplete = async (title, callback) => {
+    const response = await axios.get(baseUrl + "/autocomplete/" + title)
+    response.data.length > 0 && callback(response.data)
+}
+
+export default { getAll, add, getOne, autocomplete }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import conversationService from '../../services/conversation'
 import ConversationListItem from './ConversationListItem/ConversationListItem'
-import Spinner from '../Spinner'
+import Spinner from '../Spinner/Spinner'
 import "./ConversationList.css"
 
 const ConversationList = () => {

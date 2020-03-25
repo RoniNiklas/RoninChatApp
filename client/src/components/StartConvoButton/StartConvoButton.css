@@ -1,0 +1,14 @@
+.start-button {
+    background: white;
+    padding: 2em;
+    border: 1px solid black;
+    color:black;
+    flex: 1;
+    border-radius: 25px;
+    margin: 1em;
+}
+
+.start-button:hover, start-button:active, start-button:focus {
+    background: rgba(255,255,255,0.5) !important;
+    background-color: rgba(255,255,255,0.5) !important;
+}
