@@ -5,7 +5,7 @@
   Socket.ion käyttöönotto keskusteludatan välitykseen  
 1.2 => 8h  
   Popularconversations carousel ruma versio, conversationlistin siistimistä, kuvien uploadaaminen fullstack.   
-2.2 => 8h   
-  Kauniimpi chat näkymä  
-25.3 => 8h
-  Kauniimpi etusivu
+2.2 => 8h     
+  Kauniimpi chat näkymä   
+25.3 => 8h   
+  Kauniimpi etusivu   
