@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import openSocket from "socket.io-client"
 import { useImmer } from 'use-immer'
 import Alert from "react-bootstrap/Alert"
-import Button from "react-bootstrap/Button"
 import Sidebar from "./Sidebar/Sidebar"
 import CommentInput from './CommentInput/CommentInput'
 import MessageList from "./MessageList/MessageList"
