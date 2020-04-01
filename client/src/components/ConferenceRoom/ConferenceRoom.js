@@ -47,7 +47,7 @@ const ConferenceRoom = ({ id = 1 }) => {
             openedSocket.on("REMOVE_USER", receivedUser => {
                 remotesRef.current = remotesRef.current.filter(user => user.id !== receivedUser)
                 setRemotes(remotesRef.current)
-                console.log("REMOVE", remotesRef.current)
+                console.log("AFTER REMOVAL", remotesRef.current)
             })
             openedSocket.on("CALL_MADE", async data => {
                 const user = remotesRef.current.filter(user => user.id === data.sender)[0]

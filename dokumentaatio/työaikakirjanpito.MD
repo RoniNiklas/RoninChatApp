@@ -11,3 +11,5 @@
   Kauniimpi etusivu   
 26.3 => 4h
   webrtc-connection äänen välittämiselle kahden selaimen välillä saatu toimimaan
+01.4 => 6h  
+  webrtc-connection äänen välittämiselle useamman kuin kahden käyttäjän välillä toimii nyt, mutta epävakaasti

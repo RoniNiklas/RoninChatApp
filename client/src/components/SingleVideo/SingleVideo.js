@@ -50,12 +50,16 @@ const SingleVideo = ({ socket, pc, sender, remote }) => {
             }
         }
         openConnection()
-        return () => { pc.close() }
+        return () => {
+            console.log("CLOSING PC", pc)
+            console.log("BY USER", remote)
+            pc.close()
+        }
     }, [])
 
     return (
         <div>
-            <video className="remoteVideo" id="remoteVideo" ref={remoteVideo} autoPlay />
+            <video className="remoteVideo" id={remote.id} ref={remoteVideo} autoPlay />
         </div>
 
     )
