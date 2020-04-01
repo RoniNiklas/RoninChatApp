@@ -1,23 +1,23 @@
-import React, { useRef, useState, useEffect } from "react"
+import React, { useRef, useEffect } from "react"
 
 import "./SingleVideo.css"
 
-const VideoChatRoom = ({ socket, user }) => {
+const SingleVideo = ({ socket, pc, sender, remote }) => {
+
     const remoteVideo = useRef()
 
     useEffect(() => {
-        let pc
-        console.log("REDRAWING WITH USER", user)
+        console.log("REDRAWING WITH USER", remote.id)
+        console.log(sender)
         const openConnection = async () => {
-            pc = new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }] })
             pc.onicecandidate = (event) => {
-                if (event.candidate != null) {
-                    console.log("NEW ICE TO USER", user)
-                    socket.emit("NEW_ICE", { user: user, candidate: event.candidate })
+                if (event.candidate) {
+                    console.log("NEW ICE TO USER", remote.id)
+                    socket.emit("NEW_ICE", { receiver: remote.id, sender, candidate: event.candidate, })
                 }
             }
             pc.ontrack = (event) => {
-                remoteVideo.current.srcObject = event.streams[0]
+                if (remoteVideo.current) { remoteVideo.current.srcObject = event.streams[0] }
             }
             if (navigator.mediaDevices.getUserMedia) {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
@@ -27,34 +27,31 @@ const VideoChatRoom = ({ socket, user }) => {
             }
             const offer = await pc.createOffer()
             await pc.setLocalDescription(new RTCSessionDescription(offer))
-            console.log("CALLING USER", user)
-            socket.emit("CALL", { user: user, localDescription: pc.localDescription })
-            socket.on("CALL_MADE", async offer => {
-                await pc.setRemoteDescription(
-                    new RTCSessionDescription(offer)
-                );
-                const answer = await pc.createAnswer()
-                await pc.setLocalDescription(new RTCSessionDescription(answer))
-                console.log("ANSWERING CALL FROM USER", user)
-                socket.emit("ANSWER_CALL", { user: user, answer: answer })
-            })
-            socket.on("NEW_ICE", ice => {
-                pc.addIceCandidate(new RTCIceCandidate(ice))
-            })
-            socket.on("ANSWER_MADE", async answer => {
-                await pc.setRemoteDescription(
-                    new RTCSessionDescription(answer)
-                )
-            })
+            console.log("CALLING USER", remote.id)
+            socket.emit("CALL", { receiver: remote.id, sender, localDescription: pc.localDescription })
+            pc.onconnectionstatechange = (event) => {
+                switch (pc.connectionState) {
+                    case "connected":
+                        console.log("CONNECTED")
+                        break;
+                    case "connecting":
+                        console.log("CONNECTING")
+                    case "disconnected":
+                        console.log("DISCONNECTED")
+                    case "failed":
+                        console.log("FAILED")
+                        // One or more transports has terminated unexpectedly or in an error
+                        break;
+                    case "closed":
+                        console.log("CLOSED")
+                        // The connection has been closed
+                        break;
+                }
+            }
         }
         openConnection()
-        window.addEventListener("beforeunload", () => {
-            ["NEW_ICE", "CALL_MADE", "ANSWER_MADE"].forEach(listener => socket.removeEventListener(listener));
-        })
-        return () => {
-            ["NEW_ICE", "CALL_MADE", "ANSWER_MADE"].forEach(listener => socket.removeEventListener(listener));
-        }
-    }, [user])
+        return () => { pc.close() }
+    }, [])
 
     return (
         <div>
@@ -64,4 +61,4 @@ const VideoChatRoom = ({ socket, user }) => {
     )
 }
 
-export default VideoChatRoom
+export default SingleVideo

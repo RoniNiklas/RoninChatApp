@@ -66,6 +66,7 @@ io.on("connection", (socket) => {
         const users = sockets ? Object.keys(sockets).filter(user => user !== socket.id) : []
         console.log("USERS", users)
         socket.local.emit("SET_USERS", users)
+        socket.local.emit("SET_IDENTITY", socket.id)
         users.forEach(user => socket.to(user).emit("NEW_USER", socket.id))
     })
     socket.on('LEAVE_CONFERENCE', id => {
@@ -74,14 +75,17 @@ io.on("connection", (socket) => {
         })
         io.in("conference:"+id).emit("REMOVE_USER", socket.id)
     })
-    socket.on("CALL", offer => {
-        socket.to(offer.user).emit("CALL_MADE", offer.localDescription)
+    socket.on("CALL", data => {
+        console.log("CALL", data)
+        socket.to(data.receiver).emit("CALL_MADE", data)
     })
-    socket.on("ANSWER_CALL", answer => {
-        socket.to(answer.user).emit("ANSWER_MADE", answer.answer)
+    socket.on("ANSWER_CALL", data => {
+        console.log("ANSWER_CALL", data)
+        socket.to(data.receiver).emit("ANSWER_MADE", data)
     })
     socket.on("NEW_ICE", data => {
-        socket.to(data.user).emit("NEW_ICE", data.candidate)
+        console.log("NEW ICE", data)
+        socket.to(data.receiver).emit("NEW_ICE", data)
     })
 })
 

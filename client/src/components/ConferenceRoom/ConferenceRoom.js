@@ -5,10 +5,11 @@ import SingleVideo from "../SingleVideo/SingleVideo"
 
 const ConferenceRoom = ({ id = 1 }) => {
     const [socket, setSocket] = useState()
-    const [users, setUsers] = useState([])
+    const [remotes, setRemotes] = useState([])
     const localVideo = useRef()
-    const usersRef = useRef([])
-    usersRef.current = users
+    const remotesRef = useRef([])
+    const [identity, setIdentity] = useState()
+    const identityRef = useRef()
     useEffect(() => {
         let openedSocket
         const openConnection = async () => {
@@ -17,24 +18,67 @@ const ConferenceRoom = ({ id = 1 }) => {
                 "http://localhost:5000"))
             openedSocket.connect()
             openedSocket.emit("JOIN_CONFERENCE", id)
+            openedSocket.on("SET_IDENTITY", id => {
+                setIdentity(id)
+                identityRef.current = id
+            })
             openedSocket.on("SET_USERS", receivedUsers => {
-                setUsers(receivedUsers)
-                usersRef.current = receivedUsers
-                console.log("SET", usersRef.current)
+                remotesRef.current = receivedUsers.map(id => {
+                    return (
+                        {
+                            id: id,
+                            pc: new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] })
+                        }
+                    )
+                })
+                setRemotes(remotesRef.current)
+                console.log("SET", remotesRef.current)
             })
             openedSocket.on("NEW_USER", receivedUser => {
-                usersRef.current = usersRef.current.concat([receivedUser])
-                setUsers(usersRef.current)
-                console.log("NEW", usersRef.current)
+                remotesRef.current = remotesRef.current.concat([
+                    {
+                        id: receivedUser,
+                        pc: new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] })
+                    }
+                ])
+                setRemotes(remotesRef.current)
+                console.log("NEW", remotesRef.current)
             })
             openedSocket.on("REMOVE_USER", receivedUser => {
-                usersRef.current = usersRef.current.filter(user => user !== receivedUser)
-                setUsers(usersRef.current)
-                console.log("REMOVE", usersRef.current)
+                remotesRef.current = remotesRef.current.filter(user => user.id !== receivedUser)
+                setRemotes(remotesRef.current)
+                console.log("REMOVE", remotesRef.current)
+            })
+            openedSocket.on("CALL_MADE", async data => {
+                const user = remotesRef.current.filter(user => user.id === data.sender)[0]
+                const pc = user.pc
+                await pc.setRemoteDescription(
+                    new RTCSessionDescription(data.localDescription)
+                );
+                const answer = await pc.createAnswer()
+                await pc.setLocalDescription(new RTCSessionDescription(answer))
+                console.log("ANSWERING CALL FROM USER", user)
+                openedSocket.emit("ANSWER_CALL", { receiver: data.sender, sender: data.receiver, answer: answer })
+            })
+            openedSocket.on("NEW_ICE", data => {
+                const user = remotesRef.current.filter(user => user.id === data.sender)[0]
+                console.log("NEW ICE FROM USER", user)
+                const pc = user.pc
+                pc.addIceCandidate(new RTCIceCandidate(data.candidate))
+            })
+            openedSocket.on("ANSWER_MADE", async data => {
+                const user = remotesRef.current.filter(user => user.id === data.sender)[0]
+                console.log("ANSWERED USER", user)
+                const pc = user.pc
+                await pc.setRemoteDescription(
+                    new RTCSessionDescription(data.answer)
+                )
+
             })
             setSocket(openedSocket)
             window.addEventListener("beforeunload", () => {
                 openedSocket.emit("LEAVE_CONFERENCE", id)
+                openedSocket.off()
                 openedSocket.disconnect()
             })
         }
@@ -58,10 +102,11 @@ const ConferenceRoom = ({ id = 1 }) => {
             openedSocket.disconnect()
         }
     }, [id])
+
     return (
         <div>
             <div>
-                {users.map(user => <SingleVideo key={user} socket={socket} user={user} />)}
+                {(identity && remotes) && remotes.map(remote => <SingleVideo key={remote.id} socket={socket} remote={remote} sender={identity} pc={remote.pc} />)}
             </div>
             <div>
                 <video className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
