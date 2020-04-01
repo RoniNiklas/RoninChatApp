@@ -4,7 +4,7 @@ import Front from './components/Front/Front'
 import ConversationView from './components/ConversationView/ConversationView'
 import ConversationList from './components/ConversationList/ConversationList'
 import Menu from "./components/Menu/Menu"
-import VideoChatRoom from './components/VideoChatRoom/VideoChatRoom'
+import ConferenceRoom from './components/ConferenceRoom/ConferenceRoom'
 
 import './App.css'
 
@@ -15,7 +15,7 @@ const App = () => {
       <Route exact path="/" component={Front} />
       <Route exact path="/list/" component={ConversationList} />
       <Route exact path="/conversations/:id" component={ConversationView} />
-      <Route exact path="/video/" component={VideoChatRoom} />
+      <Route exact path="/video/" component={ConferenceRoom} />
     </div>
   );
 }

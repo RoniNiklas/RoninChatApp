@@ -9,3 +9,5 @@
   Kauniimpi chat näkymä   
 25.3 => 8h   
   Kauniimpi etusivu   
+26.3 => 4h
+  webrtc-connection äänen välittämiselle kahden selaimen välillä saatu toimimaan

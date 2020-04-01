@@ -1,0 +1,11 @@
+.remoteVideo {
+    width: 240px;
+    height: 240px;
+    border: 2px solid rebeccapurple;
+}
+
+.localVideo {
+    width: 240px;
+    height: 240px;
+    border: 2px solid green;
+}

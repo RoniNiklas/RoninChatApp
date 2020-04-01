@@ -1,22 +1,19 @@
 import React, { useRef, useState, useEffect } from "react"
-import openSocket from "socket.io-client"
 
-const VideoChatRoom = () => {
-    const localVideo = useRef(null)
-    const remoteVideo = useRef(null)
+import "./SingleVideo.css"
+
+const VideoChatRoom = ({ socket, user }) => {
+    const remoteVideo = useRef()
 
     useEffect(() => {
-        let openedSocket
         let pc
+        console.log("REDRAWING WITH USER", user)
         const openConnection = async () => {
-            openedSocket = openSocket((process.env.NODE_ENV === "production" ?
-                "https://roninchatapp.herokuapp.com/" :
-                "http://localhost:5000"))
-            openedSocket.connect()
             pc = new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }] })
             pc.onicecandidate = (event) => {
                 if (event.candidate != null) {
-                    openedSocket.emit("NEW_ICE", event.candidate)
+                    console.log("NEW ICE TO USER", user)
+                    socket.emit("NEW_ICE", { user: user, candidate: event.candidate })
                 }
             }
             pc.ontrack = (event) => {
@@ -25,42 +22,43 @@ const VideoChatRoom = () => {
             if (navigator.mediaDevices.getUserMedia) {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
                 pc.addStream(stream)
-                localVideo.current.srcObject = stream
             } else {
                 alert('Your browser does not support getUserMedia API')
             }
             const offer = await pc.createOffer()
             await pc.setLocalDescription(new RTCSessionDescription(offer))
-            openedSocket.emit("CALL", pc.localDescription)
-            openedSocket.on("CALL_MADE", async offer => {
-                console.log("CALL_MADE", offer)
+            console.log("CALLING USER", user)
+            socket.emit("CALL", { user: user, localDescription: pc.localDescription })
+            socket.on("CALL_MADE", async offer => {
                 await pc.setRemoteDescription(
                     new RTCSessionDescription(offer)
                 );
                 const answer = await pc.createAnswer()
                 await pc.setLocalDescription(new RTCSessionDescription(answer))
-                openedSocket.emit("ANSWER_CALL", answer)
+                console.log("ANSWERING CALL FROM USER", user)
+                socket.emit("ANSWER_CALL", { user: user, answer: answer })
             })
-            openedSocket.on("NEW_ICE", ice =>
+            socket.on("NEW_ICE", ice => {
                 pc.addIceCandidate(new RTCIceCandidate(ice))
-            )
-            openedSocket.on("ANSWER_MADE", async answer => {
+            })
+            socket.on("ANSWER_MADE", async answer => {
                 await pc.setRemoteDescription(
                     new RTCSessionDescription(answer)
                 )
             })
         }
         openConnection()
+        window.addEventListener("beforeunload", () => {
+            ["NEW_ICE", "CALL_MADE", "ANSWER_MADE"].forEach(listener => socket.removeEventListener(listener));
+        })
         return () => {
-            openedSocket.disconnect()
+            ["NEW_ICE", "CALL_MADE", "ANSWER_MADE"].forEach(listener => socket.removeEventListener(listener));
         }
-
-    }, [])
+    }, [user])
 
     return (
         <div>
-            <video id="localVideo" ref={localVideo} autoPlay muted />
-            <video id="remoteVideo" ref={remoteVideo} autoPlay />
+            <video className="remoteVideo" id="remoteVideo" ref={remoteVideo} autoPlay />
         </div>
 
     )

@@ -57,8 +57,32 @@ io.on("connection", (socket) => {
         }
     })
     socket.on('disconnect', function () {
-        io.emit('user disconnected');
-    });
+        io.emit('user disconnected')
+    })
+    socket.on("JOIN_CONFERENCE", id => {
+        socket.join("conference:"+id, () => console.log("Socket: " + socket.id+ " joined conference:" + id))
+        const rooms = io.sockets.adapter.rooms["conference:"+id]
+        const sockets = rooms ? rooms.sockets : undefined
+        const users = sockets ? Object.keys(sockets).filter(user => user !== socket.id) : []
+        console.log("USERS", users)
+        socket.local.emit("SET_USERS", users)
+        users.forEach(user => socket.to(user).emit("NEW_USER", socket.id))
+    })
+    socket.on('LEAVE_CONFERENCE', id => {
+        socket.leave("conference:"+id, () => {
+            console.log("SOCKET: " + socket.id + " HAS LEFT CONFERENCE "+ id)
+        })
+        io.in("conference:"+id).emit("REMOVE_USER", socket.id)
+    })
+    socket.on("CALL", offer => {
+        socket.to(offer.user).emit("CALL_MADE", offer.localDescription)
+    })
+    socket.on("ANSWER_CALL", answer => {
+        socket.to(answer.user).emit("ANSWER_MADE", answer.answer)
+    })
+    socket.on("NEW_ICE", data => {
+        socket.to(data.user).emit("NEW_ICE", data.candidate)
+    })
 })
 
 
