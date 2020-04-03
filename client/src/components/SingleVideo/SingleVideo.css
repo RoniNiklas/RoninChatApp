@@ -2,7 +2,6 @@
     width: 16vw;
     height: 9vw;
     border: 2px solid rebeccapurple;
-    margin: 1em;
 }
 
 .minimized:hover {
@@ -31,5 +30,8 @@
     width: 16vw;
     height: 9vw;
     border: 2px solid green;
-    margin: 1em;
+}
+
+.name-tag {
+    text-align: center;
 }

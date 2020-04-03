@@ -1,12 +1,10 @@
-import React, { useRef, useEffect, useState } from "react"
-import Spinner from "react-bootstrap/Spinner"
+import React, { useRef, useEffect} from "react"
 
 import "./SingleVideo.css"
 
 const SingleVideo = ({ socket, pc, sender, remote, className, changeFocus }) => {
 
     const remoteVideo = useRef()
-    const [connected, setConnected] = useState(false)
 
     useEffect(() => {
         console.log("REDRAWING WITH USER", remote.id)
@@ -31,25 +29,6 @@ const SingleVideo = ({ socket, pc, sender, remote, className, changeFocus }) => 
             await pc.setLocalDescription(new RTCSessionDescription(offer))
             console.log("CALLING USER", remote.id)
             socket.emit("CALL", { receiver: remote.id, sender, localDescription: pc.localDescription })
-            pc.onconnectionstatechange = (event) => {
-                switch (pc.connectionState) {
-                    case "connected":
-                        setConnected(true)
-                        break;
-                    case "connecting":
-                        setConnected(false)
-                    case "disconnected":
-                        setConnected(false)
-                    case "failed":
-                        setConnected(false)
-                        // One or more transports has terminated unexpectedly or in an error
-                        break;
-                    case "closed":
-                        setConnected(false)
-                        // The connection has been closed
-                        break;
-                }
-            }
         }
         openConnection()
         return () => {
@@ -60,13 +39,10 @@ const SingleVideo = ({ socket, pc, sender, remote, className, changeFocus }) => 
     }, [])
 
     return (
-        <div>
-            {connected
-                ? <video onClick={(event) => changeFocus(event)} className={className} id={remote.id} ref={remoteVideo} autoPlay />
-                : <Spinner animation="border" role="status" />
-            }
+        <div className="singlevideo-wrapper">
+            <video onClick={(event) => changeFocus(event)} className={className} id={remote.id} ref={remoteVideo} autoPlay />
+            {(remote.name && window.innerWidth > 640) && <div className="name-tag">{remote.name} </div>}
         </div>
-
     )
 }
 

@@ -11,3 +11,12 @@
     max-height: 70vw;
     background: rgba(0,0,0,0.5);
 }
+
+.singlevideo-wrapper {
+    display:flex;
+    flex-direction: column;
+    width: 18vw;
+    word-wrap: break-word;
+    margin: 1em;
+    margin-bottom: 0em;
+}

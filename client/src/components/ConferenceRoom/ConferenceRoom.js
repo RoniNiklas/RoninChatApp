@@ -15,20 +15,22 @@ const ConferenceRoom = ({ id = 1 }) => {
     useEffect(() => {
         let openedSocket
         const openConnection = async () => {
+            const name = "Adam" + Math.random()
             openedSocket = openSocket((process.env.NODE_ENV === "production" ?
                 "https://roninchatapp.herokuapp.com/" :
                 "http://localhost:5000"))
             openedSocket.connect()
-            openedSocket.emit("JOIN_CONFERENCE", id)
+            openedSocket.emit("JOIN_CONFERENCE", { conferenceId: id, name })
             openedSocket.on("SET_IDENTITY", id => {
                 setIdentity(id)
                 identityRef.current = id
             })
             openedSocket.on("SET_USERS", receivedUsers => {
-                remotesRef.current = receivedUsers.map(id => {
+                remotesRef.current = receivedUsers.map(user => {
                     return (
                         {
-                            id: id,
+                            name: user.name,
+                            id: user.id,
                             pc: new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] }),
                             className: 'minimized'
                         }
@@ -40,7 +42,8 @@ const ConferenceRoom = ({ id = 1 }) => {
             openedSocket.on("NEW_USER", receivedUser => {
                 remotesRef.current = remotesRef.current.concat([
                     {
-                        id: receivedUser,
+                        name: receivedUser.name,
+                        id: receivedUser.id,
                         pc: new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] }),
                         className: 'minimized'
                     }
@@ -81,7 +84,7 @@ const ConferenceRoom = ({ id = 1 }) => {
             })
             setSocket(openedSocket)
             window.addEventListener("beforeunload", () => {
-                openedSocket.emit("LEAVE_CONFERENCE", id)
+                openedSocket.emit("LEAVE_CONFERENCE", { conferenceId: id })
                 openedSocket.off()
                 openedSocket.disconnect()
             })
@@ -128,7 +131,10 @@ const ConferenceRoom = ({ id = 1 }) => {
         <div className="videos-wrapper">
             <div className="pointless-place-holder" />
             <div className="minimized-wrapper">
-                <video className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
+                <div className="singlevideo-wrapper">
+                    <video className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
+                    <div className="name-tag"> You </div>
+                </div>
                 {(identity && remotes) && remotes.map(remote => <SingleVideo changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} pc={remote.pc} className={remote.className} />)}
             </div>
         </div>
