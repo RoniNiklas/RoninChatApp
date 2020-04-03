@@ -9,6 +9,7 @@ const ConferenceRoom = ({ id = 1 }) => {
     const [socket, setSocket] = useState()
     const [remotes, setRemotes] = useState([])
     const localVideo = useRef()
+    const focusedVideo = useRef()
     const remotesRef = useRef([])
     const [identity, setIdentity] = useState()
     const identityRef = useRef()
@@ -110,26 +111,19 @@ const ConferenceRoom = ({ id = 1 }) => {
         }
     }, [id])
 
-    const changeFocus = (event) => {
-        setRemotes(remotes.map(remote => {
-            return (
-                remote.id === event.target.id
-                    ? {
-                        ...remote,
-                        className: (remote.className === "focused" ? "minimized" : "focused")
-                    }
-                    : {
-                        ...remote,
-                        className: "minimized"
-                    }
-            )
-        })
-        )
+    const changeFocus = (videoSrcObject) => {
+        console.log("CURRENT", focusedVideo.current)
+        console.log("OLD VIDEOSRCOBJECT", focusedVideo.current.srcObject)
+        console.log("PASSED VIDEOSRCOBJECT", videoSrcObject)
+        focusedVideo.current.srcObject = videoSrcObject
+        console.log("CURRENTSRCOBJECT,", focusedVideo.current.srcObject )
     }
 
     return (
         <div className="videos-wrapper">
-            <div className="pointless-place-holder" />
+            <div className="pointless-place-holder">
+                <video className="focused" id="focusedVideo" ref={focusedVideo} autoPlay />
+            </div>
             <div className="minimized-wrapper">
                 <div className="singlevideo-wrapper">
                     <video className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />

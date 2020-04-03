@@ -40,7 +40,7 @@ const SingleVideo = ({ socket, pc, sender, remote, className, changeFocus }) => 
 
     return (
         <div className="singlevideo-wrapper">
-            <video onClick={(event) => changeFocus(event)} className={className} id={remote.id} ref={remoteVideo} autoPlay />
+            <video onClick={() => changeFocus(remoteVideo.current.srcObject)} className={className} id={remote.id} ref={remoteVideo} autoPlay />
             {(remote.name && window.innerWidth > 640) && <div className="name-tag">{remote.name} </div>}
         </div>
     )
