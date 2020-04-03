@@ -1,4 +1,4 @@
-import React, { useRef, useEffect} from "react"
+import React, { useRef, useEffect } from "react"
 
 import "./SingleVideo.css"
 
@@ -19,11 +19,31 @@ const SingleVideo = ({ socket, pc, sender, remote, className, changeFocus }) => 
             pc.ontrack = (event) => {
                 if (remoteVideo.current) { remoteVideo.current.srcObject = event.streams[0] }
             }
-            if (navigator.mediaDevices.getUserMedia) {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-                pc.addStream(stream)
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                let stream
+                try {
+                    console.log("Trying audio + userfacing camera")
+                    stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: { facingMode: "user" } })
+
+                } catch (error) {
+                    try {
+                        console.log(error)
+                        console.log("Trying just audio")
+                        stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+                    } catch (error) {
+                        try {
+                            console.log(error)
+                            console.log("Trying just video")
+                            stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: true })
+                        } catch (error) {
+                            console.log(error)
+                            console.log("joining without usermedia")
+                        }
+                    }
+                }
+                stream && pc.addStream(stream)
             } else {
-                alert('Your browser does not support getUserMedia API')
+                alert('Your browser does not support getUserMedia API. Use the newest version of Chrome or Firefox instead.')
             }
             const offer = await pc.createOffer()
             await pc.setLocalDescription(new RTCSessionDescription(offer))

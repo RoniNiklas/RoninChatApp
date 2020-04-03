@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from "react"
 import openSocket from "socket.io-client"
+import MicOff from '@material-ui/icons/MicOff'
+import MicOn from '@material-ui/icons/Mic'
+import VideoOn from '@material-ui/icons/Videocam'
+import VideoOff from '@material-ui/icons/VideocamOff'
 
 import SingleVideo from "../SingleVideo/SingleVideo"
 
@@ -7,6 +11,8 @@ import "./ConferenceRoom.css"
 
 const ConferenceRoom = ({ id = 1 }) => {
     const [socket, setSocket] = useState()
+    const [audio, setAudio] = useState(false)
+    const [video, setVideo] = useState(false)
     const [remotes, setRemotes] = useState([])
     const localVideo = useRef()
     const focusedVideo = useRef()
@@ -94,11 +100,35 @@ const ConferenceRoom = ({ id = 1 }) => {
         openConnection()
 
         const openLocalMedia = async () => {
-            if (navigator.mediaDevices.getUserMedia) {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-                localVideo.current.srcObject = stream
+
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                let stream
+                try {
+                    console.log("Trying audio + userfacing camera")
+                    stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: { facingMode: "user" } })
+                    setAudio(true)
+                    setVideo(true)
+                } catch (error) {
+                    try {
+                        console.log(error)
+                        console.log("Trying just audio")
+                        stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+                        setAudio(true)
+                    } catch (error) {
+                        try {
+                            console.log(error)
+                            console.log("Trying just video")
+                            stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: true })
+                            setVideo(true)
+                        } catch (error) {
+                            console.log(error)
+                            console.log("joining without usermedia")
+                        }
+                    }
+                }
+                localVideo.current.srcObject = stream ? stream : undefined
             } else {
-                alert('Your browser does not support getUserMedia API')
+                alert('Your browser does not support getUserMedia API. Use the newest version of Chrome or Firefox instead.')
             }
         }
 
@@ -116,18 +146,26 @@ const ConferenceRoom = ({ id = 1 }) => {
         console.log("OLD VIDEOSRCOBJECT", focusedVideo.current.srcObject)
         console.log("PASSED VIDEOSRCOBJECT", videoSrcObject)
         focusedVideo.current.srcObject = videoSrcObject
-        console.log("CURRENTSRCOBJECT,", focusedVideo.current.srcObject )
+        console.log("CURRENTSRCOBJECT,", focusedVideo.current.srcObject)
+    }
+
+    const loseFocus = () => {
+        console.log("OLD VIDEOSRCOBJECT", focusedVideo.current.srcObject)
+        focusedVideo.current.srcObject = undefined
+        console.log("CURRENT VIDEOSRCOBJECT", focusedVideo.current.srcObject)
     }
 
     return (
         <div className="videos-wrapper">
             <div className="pointless-place-holder">
-                <video className="focused" id="focusedVideo" ref={focusedVideo} autoPlay />
+                <video onClick={() => loseFocus()} className="focused" id="focusedVideo" ref={focusedVideo} autoPlay />
             </div>
             <div className="minimized-wrapper">
                 <div className="singlevideo-wrapper">
-                    <video className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
-                    <div className="name-tag"> You </div>
+                    <video onClick={() => changeFocus(localVideo.current.srcObject)}className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
+                    <div className="name-tag"> You {audio ? <MicOn /> : <MicOff />}
+                    {video ? <VideoOn /> : <VideoOff />} </div>
+                    
                 </div>
                 {(identity && remotes) && remotes.map(remote => <SingleVideo changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} pc={remote.pc} className={remote.className} />)}
             </div>
