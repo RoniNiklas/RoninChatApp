@@ -1,0 +1,13 @@
+.minimized-wrapper {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100vw;
+}
+
+.pointless-place-holder {
+    width: 100vw;
+    height: 65vh;
+    max-height: 70vw;
+    background: rgba(0,0,0,0.5);
+}

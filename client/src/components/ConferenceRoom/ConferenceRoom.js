@@ -3,6 +3,8 @@ import openSocket from "socket.io-client"
 
 import SingleVideo from "../SingleVideo/SingleVideo"
 
+import "./ConferenceRoom.css"
+
 const ConferenceRoom = ({ id = 1 }) => {
     const [socket, setSocket] = useState()
     const [remotes, setRemotes] = useState([])
@@ -27,7 +29,8 @@ const ConferenceRoom = ({ id = 1 }) => {
                     return (
                         {
                             id: id,
-                            pc: new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] })
+                            pc: new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] }),
+                            className: 'minimized'
                         }
                     )
                 })
@@ -38,7 +41,8 @@ const ConferenceRoom = ({ id = 1 }) => {
                 remotesRef.current = remotesRef.current.concat([
                     {
                         id: receivedUser,
-                        pc: new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] })
+                        pc: new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] }),
+                        className: 'minimized'
                     }
                 ])
                 setRemotes(remotesRef.current)
@@ -103,13 +107,29 @@ const ConferenceRoom = ({ id = 1 }) => {
         }
     }, [id])
 
+    const changeFocus = (event) => {
+        setRemotes(remotes.map(remote => {
+            return (
+                remote.id === event.target.id
+                    ? {
+                        ...remote,
+                        className: (remote.className === "focused" ? "minimized" : "focused")
+                    }
+                    : {
+                        ...remote,
+                        className: "minimized"
+                    }
+            )
+        })
+        )
+    }
+
     return (
-        <div>
-            <div>
-                {(identity && remotes) && remotes.map(remote => <SingleVideo key={remote.id} socket={socket} remote={remote} sender={identity} pc={remote.pc} />)}
-            </div>
-            <div>
+        <div className="videos-wrapper">
+            <div className="pointless-place-holder" />
+            <div className="minimized-wrapper">
                 <video className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
+                {(identity && remotes) && remotes.map(remote => <SingleVideo changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} pc={remote.pc} className={remote.className} />)}
             </div>
         </div>
     )

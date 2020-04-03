@@ -1,10 +1,12 @@
-import React, { useRef, useEffect } from "react"
+import React, { useRef, useEffect, useState } from "react"
+import Spinner from "react-bootstrap/Spinner"
 
 import "./SingleVideo.css"
 
-const SingleVideo = ({ socket, pc, sender, remote }) => {
+const SingleVideo = ({ socket, pc, sender, remote, className, changeFocus }) => {
 
     const remoteVideo = useRef()
+    const [connected, setConnected] = useState(false)
 
     useEffect(() => {
         console.log("REDRAWING WITH USER", remote.id)
@@ -32,18 +34,18 @@ const SingleVideo = ({ socket, pc, sender, remote }) => {
             pc.onconnectionstatechange = (event) => {
                 switch (pc.connectionState) {
                     case "connected":
-                        console.log("CONNECTED")
+                        setConnected(true)
                         break;
                     case "connecting":
-                        console.log("CONNECTING")
+                        setConnected(false)
                     case "disconnected":
-                        console.log("DISCONNECTED")
+                        setConnected(false)
                     case "failed":
-                        console.log("FAILED")
+                        setConnected(false)
                         // One or more transports has terminated unexpectedly or in an error
                         break;
                     case "closed":
-                        console.log("CLOSED")
+                        setConnected(false)
                         // The connection has been closed
                         break;
                 }
@@ -59,7 +61,10 @@ const SingleVideo = ({ socket, pc, sender, remote }) => {
 
     return (
         <div>
-            <video className="remoteVideo" id={remote.id} ref={remoteVideo} autoPlay />
+            {connected
+                ? <video onClick={(event) => changeFocus(event)} className={className} id={remote.id} ref={remoteVideo} autoPlay />
+                : <Spinner animation="border" role="status" />
+            }
         </div>
 
     )
