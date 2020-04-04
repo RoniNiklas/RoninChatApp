@@ -11,7 +11,7 @@ import NameChangeForm from "./components/NameChangeForm/NameChangeForm"
 import './App.css'
 
 const App = () => {
-  const [name, setName] = useState()
+  const [name, setName] = useState(localStorage.getItem("name"))
   const [useAudio, setUseAudio] = useState(true)
   const [useVideo, setUseVideo] = useState(true)
   return (
