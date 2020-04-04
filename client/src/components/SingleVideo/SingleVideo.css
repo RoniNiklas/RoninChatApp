@@ -34,6 +34,10 @@
     margin:auto;
 }
 
+.localVideo:hover {
+    cursor: pointer;
+}
+
 .name-tag {
     text-align: center;
 }

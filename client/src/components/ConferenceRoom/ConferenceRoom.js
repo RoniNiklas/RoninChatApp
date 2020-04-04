@@ -9,7 +9,7 @@ import SingleVideo from "../SingleVideo/SingleVideo"
 
 import "./ConferenceRoom.css"
 
-const ConferenceRoom = ({ id = 1 }) => {
+const ConferenceRoom = ({id, name}) => {
     const [socket, setSocket] = useState()
     const [audio, setAudio] = useState(false)
     const [video, setVideo] = useState(false)
@@ -22,7 +22,6 @@ const ConferenceRoom = ({ id = 1 }) => {
     useEffect(() => {
         let openedSocket
         const openConnection = async () => {
-            const name = "Adam" + Math.random()
             openedSocket = openSocket((process.env.NODE_ENV === "production" ?
                 "https://roninchatapp.herokuapp.com/" :
                 "http://localhost:5000"))
@@ -135,11 +134,11 @@ const ConferenceRoom = ({ id = 1 }) => {
         openLocalMedia()
 
         return () => {
-            openedSocket.emit("LEAVE_CONFERENCE", id)
+            openedSocket.emit("LEAVE_CONFERENCE", { conferenceId: id })
             openedSocket.off()
             openedSocket.disconnect()
         }
-    }, [id])
+    }, [id, name])
 
     const changeFocus = (videoSrcObject) => {
         console.log("CURRENT", focusedVideo.current)
@@ -158,11 +157,11 @@ const ConferenceRoom = ({ id = 1 }) => {
     return (
         <div className="videos-wrapper">
             <div className="pointless-place-holder">
-                <video onClick={() => loseFocus()} className="focused" id="focusedVideo" ref={focusedVideo} autoPlay />
+                <video onClick={() => loseFocus()} className="focused" id="focusedVideo" ref={focusedVideo} autoPlay muted />
             </div>
             <div className="minimized-wrapper">
                 <div className="singlevideo-wrapper">
-                    <video onClick={() => changeFocus(localVideo.current.srcObject)}className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
+                    <video onClick={() => changeFocus(localVideo.current.srcObject)} className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
                     <div className="name-tag"> You {audio ? <MicOn /> : <MicOff />}
                     {video ? <VideoOn /> : <VideoOff />} </div>
                     

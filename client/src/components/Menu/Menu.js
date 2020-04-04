@@ -11,7 +11,12 @@ const Menu = () => {
                 <Navbar.Brand as={Link} href='#' to='/'>Ronin ChatApp</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="mr-auto">
+                    <Nav className="ml-auto">
+                        <Link to="/user/">
+                            <button>
+                                Change your name
+                            </button>
+                        </Link>
                     </Nav>
                 </Navbar.Collapse>
             </div>
