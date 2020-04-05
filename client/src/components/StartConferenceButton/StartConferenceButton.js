@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom"
 const StartConferenceButton = () => {
     const history = useHistory()
     const handleNewConference = () => {
-        console.log("clicked")
         history.push("/conference/" + nanoid())
     }
 

@@ -3,7 +3,6 @@ import JoinConvoButton from "../JoinConvoButton/JoinConvoButton"
 import StartConvoButton from "../StartConvoButton/StartConvoButton"
 import ListConvoButton from "../ListConvoButton/ListConvoButton"
 import FrontCarousel from "../FrontCarousel/FrontCarousel"
-import JoinVideoChatButton from "../VideoChatButton/JoinVideoChatButton"
 import StartConferenceButton from "../StartConferenceButton/StartConferenceButton"
 
 import "./Front.css"

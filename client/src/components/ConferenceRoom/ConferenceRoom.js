@@ -9,16 +9,14 @@ import SingleVideo from "../SingleVideo/SingleVideo"
 
 import "./ConferenceRoom.css"
 
-const ConferenceRoom = ({id, name}) => {
+const ConferenceRoom = ({ id, name, devices }) => {
     const [socket, setSocket] = useState()
-    const [audio, setAudio] = useState(false)
-    const [video, setVideo] = useState(false)
     const [remotes, setRemotes] = useState([])
     const localVideo = useRef()
     const focusedVideo = useRef()
     const remotesRef = useRef([])
     const [identity, setIdentity] = useState()
-    const identityRef = useRef()
+    console.log("room draws")
     useEffect(() => {
         let openedSocket
         const openConnection = async () => {
@@ -29,7 +27,6 @@ const ConferenceRoom = ({id, name}) => {
             openedSocket.emit("JOIN_CONFERENCE", { conferenceId: id, name })
             openedSocket.on("SET_IDENTITY", id => {
                 setIdentity(id)
-                identityRef.current = id
             })
             openedSocket.on("SET_USERS", receivedUsers => {
                 remotesRef.current = receivedUsers.map(user => {
@@ -104,28 +101,12 @@ const ConferenceRoom = ({id, name}) => {
                 let stream
                 try {
                     console.log("Trying audio + userfacing camera")
-                    stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: { facingMode: "user" } })
-                    setAudio(true)
-                    setVideo(true)
+                    stream = await navigator.mediaDevices.getUserMedia({ audio: devices.audio, video: devices.video ? { facingMode: "user" } : false })
                 } catch (error) {
-                    try {
-                        console.log(error)
-                        console.log("Trying just audio")
-                        stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-                        setAudio(true)
-                    } catch (error) {
-                        try {
-                            console.log(error)
-                            console.log("Trying just video")
-                            stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: true })
-                            setVideo(true)
-                        } catch (error) {
-                            console.log(error)
-                            console.log("joining without usermedia")
-                        }
-                    }
+                    console.log("error in localvideo stream")
+                    console.log(error)
                 }
-                localVideo.current.srcObject = stream ? stream : undefined
+                localVideo.current.srcObject = stream
             } else {
                 alert('Your browser does not support getUserMedia API. Use the newest version of Chrome or Firefox instead.')
             }
@@ -162,11 +143,12 @@ const ConferenceRoom = ({id, name}) => {
             <div className="minimized-wrapper">
                 <div className="singlevideo-wrapper">
                     <video onClick={() => changeFocus(localVideo.current.srcObject)} className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
-                    <div className="name-tag"> You {audio ? <MicOn /> : <MicOff />}
-                    {video ? <VideoOn /> : <VideoOff />} </div>
-                    
+                    <div className="name-tag"> You
+                        {devices.audio ? <MicOn /> : <MicOff />}
+                        {devices.video ? <VideoOn /> : <VideoOff />}
+                    </div>
                 </div>
-                {(identity && remotes) && remotes.map(remote => <SingleVideo changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} pc={remote.pc} className={remote.className} />)}
+                {(identity && remotes) && remotes.map(remote => <SingleVideo devices={devices} changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} />)}
             </div>
         </div>
     )
