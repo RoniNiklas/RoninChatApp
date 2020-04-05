@@ -13,20 +13,25 @@ import mediaDeviceService from "./services/mediaDevices"
 import './App.css'
 
 const App = () => {
-  const [name, setName] = useState(localStorage.getItem("name"))
-  const [useAudio, setUseAudio] = useState(true)
-  const [useVideo, setUseVideo] = useState(true)
+  const [name, setName] = useState(localStorage.getItem('name'))
   const [devices, setDevices] = useState()
   useEffect(() => {
     const checkDevices = async () => {
       setDevices({
-        audio: await mediaDeviceService.hasMicrophone(),
-        video: await mediaDeviceService.hasCamera()
+        chosen: {
+          audio: await mediaDeviceService.hasMicrophone(),
+          video: await mediaDeviceService.hasCamera()
+        },
+        available: {
+          audio: await mediaDeviceService.hasMicrophone(),
+          video: await mediaDeviceService.hasCamera()
+        }
       })
     }
     checkDevices()
   }, [])
   console.log("DEVICES", devices)
+  console.log("drawing app")
   return (
     <div id="app-wrapper" className="app-wrapper">
       <Menu />
@@ -35,7 +40,7 @@ const App = () => {
       <Route exact path="/conversations/:id" component={ConversationView} />
       <Route exact path="/conference/:id" render={({ match }) => (name && devices)
         ? <ConferenceRoom id={match.params.id} name={name} devices={devices} />
-        : <ConferenceLobby setName={setName} useAudio={useAudio} setUseAudio={setUseAudio} setUseVideo={setUseVideo} useVideo={useVideo} />
+        : <ConferenceLobby setName={setName} devices={devices} setDevices={setDevices} />
       } />
       <Route exact path="/user/" render={() => <NameChangeForm setName={setName} />} />
     </div>

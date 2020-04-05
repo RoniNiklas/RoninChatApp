@@ -101,7 +101,7 @@ const ConferenceRoom = ({ id, name, devices }) => {
                 let stream
                 try {
                     console.log("Trying audio + userfacing camera")
-                    stream = await navigator.mediaDevices.getUserMedia({ audio: devices.audio, video: devices.video ? { facingMode: "user" } : false })
+                    stream = await navigator.mediaDevices.getUserMedia({ audio: devices.chosen.audio, video: devices.chosen.video ? { facingMode: "user" } : false })
                 } catch (error) {
                     console.log("error in localvideo stream")
                     console.log(error)
@@ -144,8 +144,8 @@ const ConferenceRoom = ({ id, name, devices }) => {
                 <div className="singlevideo-wrapper">
                     <video onClick={() => changeFocus(localVideo.current.srcObject)} className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
                     <div className="name-tag"> You
-                        {devices.audio ? <MicOn /> : <MicOff />}
-                        {devices.video ? <VideoOn /> : <VideoOff />}
+                        {devices.chosen.audio ? <MicOn /> : <MicOff />}
+                        {devices.chosen.video ? <VideoOn /> : <VideoOff />}
                     </div>
                 </div>
                 {(identity && remotes) && remotes.map(remote => <SingleVideo devices={devices} changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} />)}

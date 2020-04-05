@@ -5,9 +5,9 @@ import "./SingleVideo.css"
 const SingleVideo = ({ socket, devices, sender, remote, changeFocus }) => {
 
     const remoteVideo = useRef()
-
+    console.log("SINGLE VIDEO DRAWS WITH USER", remote.name)
     useEffect(() => {
-        console.log("REDRAWING WITH USER", remote.id)
+        console.log("NEW USE EFFECT WITH USER", remote.id)
         console.log("SENDER", sender)
         const openConnection = async () => {
             remote.pc.onicecandidate = (event) => {
@@ -23,7 +23,7 @@ const SingleVideo = ({ socket, devices, sender, remote, changeFocus }) => {
                 let stream
                 try {
                     console.log("Trying audio + userfacing camera")
-                    stream = await navigator.mediaDevices.getUserMedia({ audio: devices.audio, video: devices.video ? { facingMode: "user" } : false })
+                    stream = await navigator.mediaDevices.getUserMedia({ audio: devices.chosen.audio, video: devices.chosen.video ? { facingMode: "user" } : false })
                 } catch (error) {
                     console.log("error in remotevideo stream")
                     console.log(error)

@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal"
 import Alert from "react-bootstrap/Alert"
 import { useHistory } from "react-router-dom"
 
-const ConferenceLobby = ({ setName, useAudio, setUseAudio, useVideo, setUseVideo }) => {
+const ConferenceLobby = ({ setName, devices, setDevices, availableDevices }) => {
     const [newName, setNewName] = useState("")
     const [error, setError] = useState()
     const history = useHistory()
@@ -45,16 +45,18 @@ const ConferenceLobby = ({ setName, useAudio, setUseAudio, useVideo, setUseVideo
                     <Form.Check
                         id="audioSwitch"
                         type="switch"
-                        checked={useAudio}
-                        onChange={() => setUseAudio(!useAudio)}
-                        label="Enable Audio"
+                        disabled={devices && !devices.available.audio}
+                        checked={devices && devices.chosen.audio}
+                        onChange={() => setDevices({...devices, chosen: {...devices.chosen, audio: !devices.chosen.audio}})}
+                        label="Enable Microphone"
                     />
                     <Form.Check
-                        id="videSwitch"
+                        id="videoSwitch"
                         type="switch"
-                        checked={useVideo}
-                        onChange={() => setUseVideo(!useVideo)}
-                        label="Enable Video"
+                        disabled={devices && !devices.available.video}
+                        checked={devices && devices.chosen.video}
+                        onChange={() => setDevices({...devices, chosen: {...devices.chosen, video: !devices.chosen.video}})}
+                        label="Enable Camera"
                     />
                 </Form>
             </Modal.Body>
