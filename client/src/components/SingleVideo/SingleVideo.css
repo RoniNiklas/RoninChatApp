@@ -1,6 +1,8 @@
 .minimized {
-    width: 16vw;
-    height: 9vw;
+    width: 32vw;
+    max-width: 256px;
+    height: 18vw;
+    max-height: 144px;
     border: 2px solid rebeccapurple;
     margin: auto;
 }
@@ -15,12 +17,7 @@
     height: 60vh;
     max-height: 60vw;
     border: 2px solid rebeccapurple;
-    position: fixed;
-    top: 8em;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
+    margin: auto;
 }
 
 .focused:hover {
@@ -28,8 +25,10 @@
 }
 
 .localVideo {
-    width: 16vw;
-    height: 9vw;
+    width: 32vw;
+    max-width: 256px;
+    height: 18vw;
+    max-height: 144px;
     border: 2px solid green;
     margin:auto;
 }
