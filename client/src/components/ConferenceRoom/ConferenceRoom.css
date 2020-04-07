@@ -3,10 +3,11 @@
     flex-direction: row;
     flex-wrap: wrap;
     width: 100vw;
+    height: 20vh;
 }
 
 .pointless-place-holder {
-    width: 100vw;
+    width: 75vw;
     height: 65vh;
     max-height: 70vw;
     display: flex;
@@ -20,4 +21,13 @@
     word-wrap: break-word;
     margin: 1em;
     margin-bottom: 0em;
+}
+
+.conference-wrapper {
+    display:flex;
+    flex-direction: row;
+}
+
+.videos-wrapper {
+    width: 75vw;
 }

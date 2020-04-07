@@ -1,0 +1,26 @@
+.conference-chat {
+    width: 25vw;
+}
+
+.conference-messages {
+    height: 65vh;
+    overflow: auto;
+    background: rgba(0,0,0,0.25);
+    scroll-snap-type: y mandatory;
+}
+
+.conference-comment-form{
+    height: 20vh;
+}
+
+.anchor {
+    overflow-anchor: auto;
+}
+
+.form-control {
+    max-height: 14vh;
+}
+
+.form-label {
+    margin: 0.5em 1em;
+}

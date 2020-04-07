@@ -13,3 +13,7 @@
   webrtc-connection äänen välittämiselle kahden selaimen välillä saatu toimimaan
 01.4 => 6h  
   webrtc-connection äänen välittämiselle useamman kuin kahden käyttäjän välillä toimii nyt, mutta epävakaasti
+4.4 => 6h
+  webrtc-connection toimii vakaammin, nimien valitseminen ja välittäminen lisätty. Epävakauden mahdollinen syy usean tabin käyttö.
+5.4 => 6h => total = 62h
+  webrtc vielä vakaampi, tarkistaa saatavilla olevat medialaitteet ja käyttää niitä.

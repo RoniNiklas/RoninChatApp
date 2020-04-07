@@ -6,6 +6,7 @@ import VideoOn from '@material-ui/icons/Videocam'
 import VideoOff from '@material-ui/icons/VideocamOff'
 
 import SingleVideo from "../SingleVideo/SingleVideo"
+import ConferenceChat from "../ConferenceChat/ConferenceChat"
 
 import "./ConferenceRoom.css"
 
@@ -106,6 +107,9 @@ const ConferenceRoom = ({ id, name, devices }) => {
                     console.log("error in localvideo stream")
                     console.log(error)
                 }
+                await new Promise((resolve, reject) => {
+                    localVideo.current && resolve()
+                })
                 localVideo.current.srcObject = stream
             } else {
                 alert('Your browser does not support getUserMedia API. Use the newest version of Chrome or Firefox instead.')
@@ -136,20 +140,23 @@ const ConferenceRoom = ({ id, name, devices }) => {
     }
 
     return (
-        <div className="videos-wrapper">
-            <div className="pointless-place-holder">
-                <video onClick={() => loseFocus()} className="focused" id="focusedVideo" ref={focusedVideo} autoPlay muted />
-            </div>
-            <div className="minimized-wrapper">
-                <div className="singlevideo-wrapper">
-                    <video onClick={() => changeFocus(localVideo.current.srcObject)} className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
-                    <div className="name-tag"> You
-                        {devices.chosen.audio ? <MicOn /> : <MicOff />}
-                        {devices.chosen.video ? <VideoOn /> : <VideoOff />}
-                    </div>
+        <div className="conference-wrapper">
+            <div className="videos-wrapper">
+                <div className="pointless-place-holder">
+                    <video onClick={() => loseFocus()} className="focused" id="focusedVideo" ref={focusedVideo} autoPlay muted />
                 </div>
-                {(identity && remotes) && remotes.map(remote => <SingleVideo devices={devices} changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} />)}
+                <div className="minimized-wrapper">
+                    <div className="singlevideo-wrapper">
+                        <video onClick={() => changeFocus(localVideo.current.srcObject)} className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
+                        <div className="name-tag"> You
+                        {devices.chosen.audio ? <MicOn /> : <MicOff />}
+                            {devices.chosen.video ? <VideoOn /> : <VideoOff />}
+                        </div>
+                    </div>
+                    {(identity && remotes) && remotes.map(remote => <SingleVideo devices={devices} changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} />)}
+                </div>
             </div>
+            {(identity && socket && name) && <ConferenceChat socket={socket} id={id} name={name} />}
         </div>
     )
 }

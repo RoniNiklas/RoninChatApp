@@ -98,6 +98,15 @@ const idNameMap = {} =
             console.log("NEW ICE", data)
             socket.to(data.receiver).emit("NEW_ICE", data)
         })
+        socket.on("POST_CONFERENCE_COMMENT", async (id, comment) => {
+            try {
+                console.log("IN: " + id + "COMMENT" + comment)
+                io.in("conference:" + id).emit("UPDATE_CONFERENCE", comment)
+            } catch (error) {
+                console.log("error: " + error)
+                socket.local.emit("SET_ERROR", "Server error: " + error)
+            }
+        })
     })
 
 
