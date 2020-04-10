@@ -3,9 +3,8 @@ import Card from "react-bootstrap/Card"
 import Form from 'react-bootstrap/Form'
 import Button from "react-bootstrap/Button"
 
-const CommentInput = ({ setError, goToLast, id, socket, name }) => {
+const CommentInput = ({ setError, id, socket, name }) => {
     const [comment, setComment] = useState("")
-    console.log("Name in commentinput", name)
 
     const sendComment = (event) => {
         event.preventDefault()
@@ -18,11 +17,9 @@ const CommentInput = ({ setError, goToLast, id, socket, name }) => {
         return (trimmedComment)
     }
     const acceptComment = (trimmedComment) => {
-        console.log("Posting comment", trimmedComment + " to ID", id)
         socket.emit("POST_CONFERENCE_COMMENT", id, { text: trimmedComment, name, date: Date.now() })
         setComment("")
         setError("")
-        goToLast()
     }
 
     const rejectComment = () => {
