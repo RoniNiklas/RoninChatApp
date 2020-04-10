@@ -4,6 +4,8 @@ import MicOff from '@material-ui/icons/MicOff'
 import MicOn from '@material-ui/icons/Mic'
 import VideoOn from '@material-ui/icons/Videocam'
 import VideoOff from '@material-ui/icons/VideocamOff'
+import ArrowUp from '@material-ui/icons/KeyboardArrowUp'
+import ArrowDown from "@material-ui/icons/KeyboardArrowDown"
 
 import SingleVideo from "../SingleVideo/SingleVideo"
 import ConferenceChat from "../ConferenceChat/ConferenceChat"
@@ -16,6 +18,7 @@ const ConferenceRoom = ({ id, name, devices }) => {
     const localVideo = useRef()
     const focusedVideo = useRef()
     const remotesRef = useRef([])
+    const videosRef = useRef()
     const [identity, setIdentity] = useState()
     console.log("room draws")
     useEffect(() => {
@@ -139,21 +142,36 @@ const ConferenceRoom = ({ id, name, devices }) => {
         console.log("CURRENT VIDEOSRCOBJECT", focusedVideo.current.srcObject)
     }
 
+
+    const goTo = (pos) => {
+        videosRef.current.scrollTop = (pos === "bottom")
+            ? videosRef.current.scrollHeight
+            : 0
+    }
+
     return (
         <div className="conference-wrapper">
             <div className="videos-wrapper">
                 <div className="pointless-place-holder">
                     <video onClick={() => loseFocus()} className="focused" id="focusedVideo" ref={focusedVideo} autoPlay muted />
                 </div>
-                <div className="minimized-wrapper">
-                    <div className="singlevideo-wrapper">
-                        <video onClick={() => changeFocus(localVideo.current.srcObject)} className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
-                        <div className="name-tag"> You
+                <div className="relative" >
+                    <div className="minimized-wrapper" ref={videosRef}>
+                        <div className="singlevideo-wrapper">
+                            <video onClick={() => changeFocus(localVideo.current.srcObject)} className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
+                            <div className="name-tag"> You
                         {devices.chosen.audio ? <MicOn /> : <MicOff />}
-                            {devices.chosen.video ? <VideoOn /> : <VideoOff />}
+                                {devices.chosen.video ? <VideoOn /> : <VideoOff />}
+                            </div>
                         </div>
+                        <button className="absolute top right popped arrow-button" onClick={() => goTo("top")}>
+                            <ArrowUp />
+                        </button>
+                        {(identity && remotes) && remotes.map(remote => <SingleVideo devices={devices} changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} />)}
+                        <button className="absolute bottom right popped arrow-button" onClick={() => goTo("bottom")}>
+                            <ArrowDown />
+                        </button>
                     </div>
-                    {(identity && remotes) && remotes.map(remote => <SingleVideo devices={devices} changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} />)}
                 </div>
             </div>
             {(identity && socket && name) && <ConferenceChat socket={socket} id={id} name={name} />}

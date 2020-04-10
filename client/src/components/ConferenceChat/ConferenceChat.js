@@ -36,7 +36,7 @@ const ConferenceChat = ({ socket, id, name }) => {
         <>
             {error && <Alert variant='danger' className="conversation-view-error">{error}</Alert>}
             <div className="conference-chat">
-                <div className="messages-wrapper">
+                <div className="relative">
                     <button className="absolute top right popped arrow-button" onClick={() => goTo("top")}>
                         <ArrowUp />
                     </button>
