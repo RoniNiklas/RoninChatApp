@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import openSocket from "socket.io-client"
+import Alert from "react-bootstrap/Alert"
 import MicOff from '@material-ui/icons/MicOff'
 import MicOn from '@material-ui/icons/Mic'
 import VideoOn from '@material-ui/icons/Videocam'
@@ -12,7 +13,8 @@ import ConferenceChat from "../ConferenceChat/ConferenceChat"
 
 import "./ConferenceRoom.css"
 
-const ConferenceRoom = ({ id, name, devices }) => {
+const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) => {
+    const [error, setError] = useState("")
     const [socket, setSocket] = useState()
     const [remotes, setRemotes] = useState([])
     const localVideo = useRef()
@@ -28,9 +30,13 @@ const ConferenceRoom = ({ id, name, devices }) => {
                 "https://roninchatapp.herokuapp.com/" :
                 "http://localhost:5000"))
             openedSocket.connect()
-            openedSocket.emit("JOIN_CONFERENCE", { conferenceId: id, name })
+            console.log("PASS", password)
+            openedSocket.emit("JOIN_CONFERENCE", { conferenceId: id, name, password })
             openedSocket.on("SET_IDENTITY", id => {
                 setIdentity(id)
+            })
+            openedSocket.on("SET_ERROR", error => {
+                setError(error)
             })
             openedSocket.on("SET_USERS", receivedUsers => {
                 remotesRef.current = receivedUsers.map(user => {
@@ -125,6 +131,8 @@ const ConferenceRoom = ({ id, name, devices }) => {
             openedSocket.emit("LEAVE_CONFERENCE", { conferenceId: id })
             openedSocket.off()
             openedSocket.disconnect()
+            setName("")
+            setPassword("")
         }
     }, [id, name])
 
@@ -151,29 +159,33 @@ const ConferenceRoom = ({ id, name, devices }) => {
 
     return (
         <div className="conference-wrapper">
-            <div className="videos-wrapper">
-                <div className="pointless-place-holder">
-                    <video onClick={() => loseFocus()} className="focused" id="focusedVideo" ref={focusedVideo} autoPlay muted />
-                </div>
-                <div className="relative" >
-                    <div className="minimized-wrapper" ref={videosRef}>
-                        <div className="singlevideo-wrapper">
-                            <video onClick={() => changeFocus(localVideo.current.srcObject)} className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
-                            <div className="name-tag"> You
-                        {devices.chosen.audio ? <MicOn /> : <MicOff />}
-                                {devices.chosen.video ? <VideoOn /> : <VideoOff />}
+            {error && <Alert variant="danger" className="conference-error">{error}</Alert>}
+            {identity &&
+                <div className="videos-wrapper">
+                    <div className="pointless-place-holder">
+                        <video onClick={() => loseFocus()} className="focused" id="focusedVideo" ref={focusedVideo} autoPlay muted />
+                    </div>
+                    <div className="relative" >
+                        <div className="minimized-wrapper" ref={videosRef}>
+                            <div className="singlevideo-wrapper">
+                                <video onClick={() => changeFocus(localVideo.current.srcObject)} className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
+                                <div className="name-tag"> 
+                                    You
+                                    {devices.chosen.audio ? <MicOn /> : <MicOff />}
+                                    {devices.chosen.video ? <VideoOn /> : <VideoOff />}
+                                </div>
                             </div>
+                            <button className="absolute top right popped arrow-button" onClick={() => goTo("top")}>
+                                <ArrowUp />
+                            </button>
+                            {(remotes) && remotes.map(remote => <SingleVideo devices={devices} changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} />)}
+                            <button className="absolute bottom right popped arrow-button" onClick={() => goTo("bottom")}>
+                                <ArrowDown />
+                            </button>
                         </div>
-                        <button className="absolute top right popped arrow-button" onClick={() => goTo("top")}>
-                            <ArrowUp />
-                        </button>
-                        {(identity && remotes) && remotes.map(remote => <SingleVideo devices={devices} changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} />)}
-                        <button className="absolute bottom right popped arrow-button" onClick={() => goTo("bottom")}>
-                            <ArrowDown />
-                        </button>
                     </div>
                 </div>
-            </div>
+            }
             {(identity && socket && name) && <ConferenceChat socket={socket} id={id} name={name} />}
         </div>
     )

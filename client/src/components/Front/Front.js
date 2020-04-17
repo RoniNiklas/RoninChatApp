@@ -4,6 +4,7 @@ import StartConvoButton from "../StartConvoButton/StartConvoButton"
 import ListConvoButton from "../ListConvoButton/ListConvoButton"
 import FrontCarousel from "../FrontCarousel/FrontCarousel"
 import StartConferenceButton from "../StartConferenceButton/StartConferenceButton"
+import JoinConferenceButton from "../JoinConferenceButton/JoinConferenceButton"
 
 import "./Front.css"
 
@@ -18,6 +19,7 @@ const Front = () => {
                     <StartConvoButton />
                     <ListConvoButton />
                     <StartConferenceButton />
+                    <JoinConferenceButton />
                 </div>
             </div>
         </div>

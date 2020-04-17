@@ -36,3 +36,11 @@
 .videos-wrapper {
     width: 67vw;
 }
+
+.conference-error {
+    position: fixed;
+    top: 11vh;
+    left: 33%;
+    right: 33%;
+    text-align: center;
+}

@@ -6,14 +6,14 @@ import ConversationList from './components/ConversationList/ConversationList'
 import Menu from "./components/Menu/Menu"
 import ConferenceRoom from './components/ConferenceRoom/ConferenceRoom'
 import ConferenceLobby from "./components/ConferenceLobby/ConferenceLobby"
-import NameChangeForm from "./components/NameChangeForm/NameChangeForm"
 
 import mediaDeviceService from "./services/mediaDevices"
 
 import './App.css'
 
 const App = () => {
-  const [name, setName] = useState(localStorage.getItem('name'))
+  const [name, setName] = useState("")
+  const [password, setPassword] = useState("")
   const [devices, setDevices] = useState()
   useEffect(() => {
     const checkDevices = async () => {
@@ -38,11 +38,10 @@ const App = () => {
       <Route exact path="/" component={Front} />
       <Route exact path="/list/" component={ConversationList} />
       <Route exact path="/conversations/:id" component={ConversationView} />
-      <Route exact path="/conference/:id" render={({ match }) => (name && devices)
-        ? <ConferenceRoom id={match.params.id} name={name} devices={devices} />
-        : <ConferenceLobby setName={setName} devices={devices} setDevices={setDevices} />
+      <Route exact path="/conference/:id" render={({ match }) => (name && devices && password)
+        ? <ConferenceRoom id={match.params.id} name={name} setName={setName} setPassword={setPassword} devices={devices} password={password} />
+        : <ConferenceLobby setName={setName} devices={devices} setDevices={setDevices} password={password} setPassword={setPassword} />
       } />
-      <Route exact path="/user/" render={() => <NameChangeForm setName={setName} />} />
     </div>
   )
 }

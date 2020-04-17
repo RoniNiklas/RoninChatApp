@@ -8,7 +8,7 @@ import './AutocompleteList.css'
 
 const AutocompleteList = ({ suggestions, handleClick }) => {
   return (
-    <Card data-testid='autocomplete-list' className="autocompletelist">
+    <Card className="autocompletelist">
       {suggestions.map(suggestion => <AutocompleteEntry key={suggestion.id} suggestion={suggestion} handleClick={handleClick} />)}
     </Card>
   )

@@ -1,19 +1,18 @@
-import React from "react"
-import { nanoid } from "nanoid"
-import { useHistory } from "react-router-dom"
+import React, { useState } from "react"
+import StartConferenceForm from "../StartConferenceForm/StartConferenceForm"
+
 
 const StartConferenceButton = () => {
-    const history = useHistory()
-    const handleNewConference = () => {
-        history.push("/conference/" + nanoid())
-    }
-
+    const [showModal, setShowModal] = useState(false)
     return (
-        <button
-            className="start-button"
-            onClick={() => handleNewConference()} >
-            Start a New Conference
-        </button>
+        <>
+            <button
+                className="start-button"
+                onClick={() => setShowModal(!showModal)} >
+                Start a New Conference
+            </button>
+            {showModal && <StartConferenceForm showModal={showModal} setShowModal={setShowModal} />}
+        </>
     )
 }
 
