@@ -62,7 +62,9 @@ const idNameMap = {} =
             io.emit('user disconnected')
         })
         socket.on("JOIN_CONFERENCE", data => {
-            socket.join("conference:" + data.conferenceId, () => console.log("Socket: " + socket.id + " joined conference:" + data.conferenceId))
+            socket.join("conference:" + data.conferenceId,
+                () => console.log("Socket: " + socket.id + " joined conference:" + data.conferenceId)
+            )
             idNameMap[socket.id] = data.name
             const rooms = io.sockets.adapter.rooms["conference:" + data.conferenceId]
             const sockets = rooms ? rooms.sockets : undefined
@@ -75,7 +77,6 @@ const idNameMap = {} =
                     }
                 )
             })
-            console.log("USERS", users)
             socket.local.emit("SET_USERS", users)
             socket.local.emit("SET_IDENTITY", socket.id)
             users.forEach(user => socket.to(user.id).emit("NEW_USER", { id: socket.id, name: data.name }))
@@ -87,20 +88,16 @@ const idNameMap = {} =
             io.in("conference:" + data.conferenceId).emit("REMOVE_USER", socket.id)
         })
         socket.on("CALL", data => {
-            console.log("CALL", data)
             socket.to(data.receiver).emit("CALL_MADE", data)
         })
         socket.on("ANSWER_CALL", data => {
-            console.log("ANSWER_CALL", data)
             socket.to(data.receiver).emit("ANSWER_MADE", data)
         })
         socket.on("NEW_ICE", data => {
-            console.log("NEW ICE", data)
             socket.to(data.receiver).emit("NEW_ICE", data)
         })
         socket.on("POST_CONFERENCE_COMMENT", async (id, comment) => {
             try {
-                console.log("IN: " + id + "COMMENT" + comment)
                 io.in("conference:" + id).emit("UPDATE_CONFERENCE", comment)
             } catch (error) {
                 console.log("error: " + error)

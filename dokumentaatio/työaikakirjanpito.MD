@@ -17,3 +17,5 @@
   webrtc-connection toimii vakaammin, nimien valitseminen ja välittäminen lisätty. Epävakauden mahdollinen syy usean tabin käyttö.
 5.4 => 6h => total = 62h
   webrtc vielä vakaampi, tarkistaa saatavilla olevat medialaitteet ja käyttää niitä.
+7.4 && 10.4 => 10h => total = 72h
+  conference-ikkunassa voi myös chatata, chatissa voi lähettää emojeja (spelling?), conferenceroom css asettelu on nyt suhtkoht. desktop valmis, joskaan ei toimi ollenkaan puhelinkoossa :C
