@@ -16,6 +16,8 @@ import "./ConferenceRoom.css"
 const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) => {
     const [error, setError] = useState("")
     const [socket, setSocket] = useState()
+    const [audio, setAudio] = useState(devices.chosen.audio)
+    const [video, setVideo] = useState(devices.chosen.video)
     const [remotes, setRemotes] = useState([])
     const localVideo = useRef()
     const focusedVideo = useRef()
@@ -44,8 +46,7 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
                         {
                             name: user.name,
                             id: user.id,
-                            pc: new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] }),
-                            className: 'minimized'
+                            pc: new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] })
                         }
                     )
                 })
@@ -57,8 +58,7 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
                     {
                         name: receivedUser.name,
                         id: receivedUser.id,
-                        pc: new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] }),
-                        className: 'minimized'
+                        pc: new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] })
                     }
                 ])
                 setRemotes(remotesRef.current)
@@ -151,7 +151,19 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
             ? videosRef.current.scrollHeight
             : 0
     }
+    const alterAudioState = () => {
+        if (devices.available.audio) {
+            stream.getAudioTracks().forEach(track => track.enabled = !track.enabled)
+            setAudio(!audio)
+        }
+    }
 
+    const alterVideoState = () => {
+        if (devices.available.video) {
+            stream.getVideoTracks().forEach(track => track.enabled = !track.enabled)
+            setVideo(!video)
+        }
+    }
     return (
         <div className="conference-wrapper">
             {error && <Alert variant="danger" className="conference-error">{error}</Alert>}
@@ -164,10 +176,10 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
                         <div className="minimized-wrapper" ref={videosRef}>
                             <div className="singlevideo-wrapper">
                                 <video onClick={() => changeFocus(localVideo.current.srcObject)} className="localVideo" id="localVideo" ref={localVideo} autoPlay muted />
-                                <div className="name-tag"> 
-                                    You
-                                    {devices.chosen.audio ? <MicOn /> : <MicOff />}
-                                    {devices.chosen.video ? <VideoOn /> : <VideoOff />}
+                                <div className="name-tag">
+                                    You &nbsp;
+                                    <button onClick={alterAudioState}>{audio ? <MicOn /> : <MicOff />}</button>
+                                    <button onClick={alterVideoState}>{video ? <VideoOn /> : <VideoOff />}</button>
                                 </div>
                             </div>
                             <button className="absolute top right popped arrow-button" onClick={() => goTo("top")}>

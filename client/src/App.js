@@ -13,7 +13,7 @@ import './App.css'
 
 const App = () => {
   const [name, setName] = useState("")
-  const [password, setPassword] = useState("")
+  const [password, setPassword] = useState("alfie")
   const [devices, setDevices] = useState()
   useEffect(() => {
     const checkDevices = async () => {

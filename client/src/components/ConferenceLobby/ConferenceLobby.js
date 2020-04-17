@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom"
 
 const ConferenceLobby = ({ setName, devices, setDevices, setPassword }) => {
     const [newName, setNewName] = useState(localStorage.getItem('name') || "")
-    const [newPassword, setNewPassword] = useState("")
+    const [newPassword, setNewPassword] = useState("alfie")
     const [error, setError] = useState("")
     const history = useHistory()
     const handleChange = (input) => {

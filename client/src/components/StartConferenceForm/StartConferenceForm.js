@@ -9,7 +9,7 @@ import conferenceService from "../../services/conference"
 
 const StartConferenceForm = ({ showModal, setShowModal }) => {
     const [error, setError] = useState("")
-    const [password, setPassword] = useState("")
+    const [password, setPassword] = useState("alfie")
     const history = useHistory()
 
     const postConference = async (event) => {
@@ -42,7 +42,7 @@ const StartConferenceForm = ({ showModal, setShowModal }) => {
                 <Form onSubmit={postConference}>
                     <Form.Group>
                         <Form.Label htmlFor="password">Choose a password for the Conference</Form.Label>
-                        <Form.Control autoComplete="off" type="text" name="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+                        <Form.Control autoComplete="off" type="text" name="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
                     </Form.Group>
                 </Form>
             </Modal.Body>
