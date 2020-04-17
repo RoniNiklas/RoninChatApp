@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react"
 
 import "./SingleVideo.css"
 
-const SingleVideo = ({ socket, devices, sender, remote, changeFocus }) => {
+const SingleVideo = ({ socket, sender, remote, changeFocus, stream }) => {
 
     const remoteVideo = useRef()
     console.log("SINGLE VIDEO DRAWS WITH USER", remote.name)
@@ -19,19 +19,7 @@ const SingleVideo = ({ socket, devices, sender, remote, changeFocus }) => {
             remote.pc.ontrack = (event) => {
                 if (remoteVideo.current) { remoteVideo.current.srcObject = event.streams[0] }
             }
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                let stream
-                try {
-                    console.log("Trying audio + userfacing camera")
-                    stream = await navigator.mediaDevices.getUserMedia({ audio: devices.chosen.audio, video: devices.chosen.video ? { facingMode: "user" } : false })
-                } catch (error) {
-                    console.log("error in remotevideo stream")
-                    console.log(error)
-                }
-                stream && remote.pc.addStream(stream)
-            } else {
-                alert('Your browser does not support getUserMedia API. Use the newest version of Chrome or Firefox instead.')
-            }
+            remote.pc.addStream(stream)
             const offer = await remote.pc.createOffer()
             await remote.pc.setLocalDescription(new RTCSessionDescription(offer))
             console.log("CALLING USER", remote.id)

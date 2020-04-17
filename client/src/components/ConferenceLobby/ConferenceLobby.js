@@ -28,7 +28,7 @@ const ConferenceLobby = ({ setName, devices, setDevices, setPassword }) => {
     }
 
     return (
-        <Modal show={true}>
+        <Modal show={true} onHide={() => {}}>
             <Modal.Header> Select a name before continuing </Modal.Header>
             <Modal.Body>
                 {error && <Alert variant="danger">{error}</Alert>}

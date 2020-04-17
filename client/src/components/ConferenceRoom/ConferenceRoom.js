@@ -21,6 +21,7 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
     const focusedVideo = useRef()
     const remotesRef = useRef([])
     const videosRef = useRef()
+    const [stream, setStream] = useState()
     const [identity, setIdentity] = useState()
     console.log("room draws")
     useEffect(() => {
@@ -30,7 +31,6 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
                 "https://roninchatapp.herokuapp.com/" :
                 "http://localhost:5000"))
             openedSocket.connect()
-            console.log("PASS", password)
             openedSocket.emit("JOIN_CONFERENCE", { conferenceId: id, name, password })
             openedSocket.on("SET_IDENTITY", id => {
                 setIdentity(id)
@@ -108,10 +108,10 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
         const openLocalMedia = async () => {
 
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                let stream
+                let newStream
                 try {
                     console.log("Trying audio + userfacing camera")
-                    stream = await navigator.mediaDevices.getUserMedia({ audio: devices.chosen.audio, video: devices.chosen.video ? { facingMode: "user" } : false })
+                    newStream = await navigator.mediaDevices.getUserMedia({ audio: devices.chosen.audio, video: devices.chosen.video ? { facingMode: "user" } : false })
                 } catch (error) {
                     console.log("error in localvideo stream")
                     console.log(error)
@@ -119,7 +119,8 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
                 await new Promise((resolve, reject) => {
                     localVideo.current && resolve()
                 })
-                localVideo.current.srcObject = stream
+                localVideo.current.srcObject = newStream
+                setStream(newStream)
             } else {
                 alert('Your browser does not support getUserMedia API. Use the newest version of Chrome or Firefox instead.')
             }
@@ -134,20 +135,14 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
             setName("")
             setPassword("")
         }
-    }, [id, name])
+    }, [id, name, devices, password, setName, setPassword])
 
     const changeFocus = (videoSrcObject) => {
-        console.log("CURRENT", focusedVideo.current)
-        console.log("OLD VIDEOSRCOBJECT", focusedVideo.current.srcObject)
-        console.log("PASSED VIDEOSRCOBJECT", videoSrcObject)
         focusedVideo.current.srcObject = videoSrcObject
-        console.log("CURRENTSRCOBJECT,", focusedVideo.current.srcObject)
     }
 
     const loseFocus = () => {
-        console.log("OLD VIDEOSRCOBJECT", focusedVideo.current.srcObject)
         focusedVideo.current.srcObject = undefined
-        console.log("CURRENT VIDEOSRCOBJECT", focusedVideo.current.srcObject)
     }
 
 
@@ -178,7 +173,7 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
                             <button className="absolute top right popped arrow-button" onClick={() => goTo("top")}>
                                 <ArrowUp />
                             </button>
-                            {(remotes) && remotes.map(remote => <SingleVideo devices={devices} changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} />)}
+                            {(remotes && stream) && remotes.map(remote => <SingleVideo changeFocus={changeFocus} key={remote.id} socket={socket} remote={remote} sender={identity} stream={stream} />)}
                             <button className="absolute bottom right popped arrow-button" onClick={() => goTo("bottom")}>
                                 <ArrowDown />
                             </button>
