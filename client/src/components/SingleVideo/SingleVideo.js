@@ -5,6 +5,7 @@ import "./SingleVideo.css"
 const SingleVideo = ({ socket, sender, remote, changeFocus, stream }) => {
 
     const remoteVideo = useRef()
+    const inboundStream = useRef
     console.log("SINGLE VIDEO DRAWS WITH USER", remote.name)
     useEffect(() => {
         console.log("NEW USE EFFECT WITH USER", remote.id)
@@ -16,10 +17,22 @@ const SingleVideo = ({ socket, sender, remote, changeFocus, stream }) => {
                     socket.emit("NEW_ICE", { receiver: remote.id, sender, candidate: event.candidate, })
                 }
             }
+            /*
             remote.pc.ontrack = (event) => {
                 if (remoteVideo.current) { remoteVideo.current.srcObject = event.streams[0] }
+            }*/
+            remote.pc.ontrack = event => {
+                if (event.streams && event.streams[0]) {
+                    remoteVideo.current.srcObject = event.streams[0]
+                } else {
+                    if (!inboundStream.current) {
+                        inboundStream.current = new MediaStream()
+                        remoteVideo.current.srcObject = inboundStream.current
+                    }
+                    inboundStream.current.addTrack(event.track)
+                }
             }
-            remote.pc.addStream(stream)
+            stream.getTracks().forEach(track => remote.pc.addTrack(track, stream));
             const offer = await remote.pc.createOffer()
             await remote.pc.setLocalDescription(new RTCSessionDescription(offer))
             console.log("CALLING USER", remote.id)
