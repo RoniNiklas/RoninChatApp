@@ -5,12 +5,13 @@ import "./SingleVideo.css"
 const SingleVideo = ({ socket, sender, remote, changeFocus, stream }) => {
 
     const remoteVideo = useRef()
-    const inboundStream = useRef
+    const inboundStream = useRef()
     console.log("SINGLE VIDEO DRAWS WITH USER", remote.name)
     useEffect(() => {
         console.log("NEW USE EFFECT WITH USER", remote.id)
         console.log("SENDER", sender)
         const openConnection = async () => {
+            remote.pc = new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] })
             remote.pc.onicecandidate = (event) => {
                 if (event.candidate) {
                     console.log("NEW ICE TO USER", remote.id)
@@ -22,6 +23,7 @@ const SingleVideo = ({ socket, sender, remote, changeFocus, stream }) => {
                 if (remoteVideo.current) { remoteVideo.current.srcObject = event.streams[0] }
             }*/
             remote.pc.ontrack = event => {
+                console.log("NEW TRACK", event.track)
                 if (event.streams && event.streams[0]) {
                     remoteVideo.current.srcObject = event.streams[0]
                 } else {
@@ -32,6 +34,7 @@ const SingleVideo = ({ socket, sender, remote, changeFocus, stream }) => {
                     inboundStream.current.addTrack(event.track)
                 }
             }
+            console.log("SENDING TRACKS", stream.getTracks())
             stream.getTracks().forEach(track => remote.pc.addTrack(track, stream));
             const offer = await remote.pc.createOffer()
             await remote.pc.setLocalDescription(new RTCSessionDescription(offer))
@@ -44,7 +47,7 @@ const SingleVideo = ({ socket, sender, remote, changeFocus, stream }) => {
             console.log("BY USER", remote)
             remote.pc.close()
         }
-    }, [])
+    }, [stream])
 
     return (
         <div className="singlevideo-wrapper">

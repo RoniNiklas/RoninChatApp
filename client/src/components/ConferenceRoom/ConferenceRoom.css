@@ -22,7 +22,6 @@
 .singlevideo-wrapper {
     display:flex;
     flex-direction: column;
-    width: 18vw;
     word-wrap: break-word;
     margin: 1em;
     margin-bottom: 0em;

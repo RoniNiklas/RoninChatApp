@@ -23,7 +23,7 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
     const focusedVideo = useRef()
     const remotesRef = useRef([])
     const videosRef = useRef()
-    const [stream, setStream] = useState()
+    const [stream, setStream] = useState(new MediaStream())
     const [identity, setIdentity] = useState()
     console.log("room draws")
     useEffect(() => {
@@ -145,6 +145,23 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
         focusedVideo.current.srcObject = undefined
     }
 
+    const screenCapture = async () => {
+        try {
+            const screenStream = await navigator.mediaDevices.getDisplayMedia()
+            const screenVideo = screenStream.getVideoTracks()[0]
+            const oldVideo = stream.getVideoTracks()[0]
+            const streamCopy = new MediaStream()
+            stream.getAudioTracks()[0] && streamCopy.addTrack(stream.getAudioTracks()[0])
+            streamCopy.addTrack(screenVideo) 
+            setStream(streamCopy)
+            localVideo.current.srcObject = streamCopy
+            screenVideo.addEventListener('ended', () => {
+                console.log("DO SOMETHING")
+            })
+        } catch (err) {
+            console.log("Error: " + err);
+        }
+    }
 
     const goTo = (pos) => {
         videosRef.current.scrollTop = (pos === "bottom")
@@ -180,6 +197,7 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
                                     You &nbsp;
                                     <button onClick={alterAudioState}>{audio ? <MicOn /> : <MicOff />}</button>
                                     <button onClick={alterVideoState}>{video ? <VideoOn /> : <VideoOff />}</button>
+                                    <button onClick={screenCapture}>Share screen</button>
                                 </div>
                             </div>
                             <button className="absolute top right popped arrow-button" onClick={() => goTo("top")}>

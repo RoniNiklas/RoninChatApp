@@ -4,7 +4,7 @@
     height: 18vw;
     max-height: 144px;
     border: 2px solid rebeccapurple;
-    margin: auto;
+    margin: 0 1em;
 }
 
 .minimized:hover {
@@ -30,7 +30,7 @@
     height: 18vw;
     max-height: 144px;
     border: 2px solid green;
-    margin:auto;
+    margin: 0 1em;
 }
 
 .localVideo:hover {
