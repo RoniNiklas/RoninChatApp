@@ -1,25 +1,22 @@
 .carousel {
-    height: 60vh;
-    max-width: 1280px;
+    height: 66vh;
+    max-width: 100vw;
     margin:auto;
-    margin-top: 1em;
     object-fit: cover;
 }
 
 .carousel-inner {
-    height: 60vh;
+    height: 66vh;
     max-width: 100vw;
-    width: 1280px;
+    width: 100vw;
     margin:auto;
-    margin-top: 1em;
     object-fit: cover;
 }
 
 .d-block {
-    height: 60vh;
-    max-width: 1280px;
+    height: 66vh;
+    max-width: 100vw;
     margin:auto;
-    margin-top: 1em;
     object-fit: cover;
 }
 

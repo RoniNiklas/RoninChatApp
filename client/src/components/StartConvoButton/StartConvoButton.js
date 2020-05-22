@@ -1,14 +1,12 @@
 import React, { useState } from "react"
 import StartConversationForm from "../StartConversationForm/StartConversationForm"
 
-import "./StartConvoButton.css"
-
 const StartConvoButton= () => {
     const [showModal, setShowModal] = useState(false)
     return (
         <>
             <button
-                className="start-button"
+                className="front-button"
                 onClick={() => setShowModal(!showModal)}>
                 Start a New Conversation
             </button>

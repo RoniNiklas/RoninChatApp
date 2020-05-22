@@ -3,17 +3,46 @@
     flex-direction: column;
     flex-wrap:wrap;
     margin: auto;
-    margin-top: 1em;
     width: 100%;
     color:white;
     align-items: center;
     justify-content: center;
     padding: 1em;
-    background: rgba(128,128,255, 0.33)
+    background: rgba(128,128,255, 0.33);
+    min-height: 24vh;
 }
 
 .button-wrapper {
     max-width: 100vw;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.front-button {
+    background: white;
+    padding: 2em;
+    border: 1px solid black;
+    color:black;
+    border-radius: 25px;
+    margin: 0em 1em;
+    margin-top: 1em;
+    text-align: center;
+    width: 240px;
+    height: 15vh;
+    vertical-align: middle;
+    color: black;
+    flex: 1 1 auto;
+    max-width: 240px;
+}
+
+.front-title {
+    margin: 0;
+    text-shadow: -1px 0 0 rgba(0,0,0,0.5), 0 1px 0 rgba(0,0,0,0.5), 1px 0 0 rgba(0,0,0,0.5), 0 -1px 0 rgba(0,0,0,0.5);
+}
+
+.front-button:hover, front-button:active, front-button:focus {
+    background: rgba(255,255,255,0.5) !important;
+    background-color: rgba(255,255,255,0.5) !important;
 }

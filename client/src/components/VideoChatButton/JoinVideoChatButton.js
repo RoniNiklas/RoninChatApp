@@ -1,12 +1,10 @@
 import React from "react"
 import { Link } from "react-router-dom"
 
-import "./JoinVideoChatButton.css"
-
 const JoinVideoChatButton = () => {
     return (
 
-        <Link to="/video/" className="video-button">
+        <Link to="/video/" className="front-button">
             <button style={{border:"0px", background:"transparent", margin:"auto"}}>
                 Join a Video Chat
             </button>

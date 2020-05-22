@@ -7,7 +7,7 @@ const StartConferenceButton = () => {
     return (
         <>
             <button
-                className="start-button"
+                className="front-button"
                 onClick={() => setShowModal(!showModal)} >
                 Start a New Conference
             </button>

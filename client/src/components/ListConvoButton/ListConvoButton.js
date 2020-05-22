@@ -1,15 +1,14 @@
 import React from "react"
 import { Link } from "react-router-dom"
 
-import "./ListConvoButton.css"
-
 const ListConvoButton = () => {
     return (
-        <Link to="/list" className="list-button">
-            <button style={{border:"0px", background:"transparent"}}>
+        <button className="front-button">
+            <Link to="/list">
                 Browse All Conversations
-            </button>
-        </Link>
+            </Link>
+        </button>
+
     )
 }
 

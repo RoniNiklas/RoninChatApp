@@ -13,7 +13,7 @@ const Front = () => {
         <div>
             <FrontCarousel />
             <div className="front-wrapper">
-                <h2>Get Started!</h2>
+                <h2 className="front-title">Get Started!</h2>
                 <div className="button-wrapper">
                     <JoinConvoButton />
                     <StartConvoButton />

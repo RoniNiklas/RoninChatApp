@@ -23,3 +23,5 @@
   mute nappula mikrofonille ja kameralle, salasanasuojaus konferensseille, streamin yksinkertaistaminen, webrtc kanssa tappelua  
 25.4 => 4h => total = 84h
   huono versio screen capturesta. koitin parantaa, mutta selaimen toiminta ei tunnu vastaavan spesifikaatiota addtrackien jne. osalta.
+22.5 => 4h => total = 88h
+  vähän stabiilimpi versio webrtc:stä. Conference siirretty tuotantoon, ja webrtc toimii odotetusti suurimman osan ajasta, joskin ihmeellisiä virheitä tapahtuu vieläkin aina välillä.

@@ -9,7 +9,7 @@ const JoinConvoButton = () => {
     return (
         <>
             <button
-                className="join-button"
+                className="front-button"
                 onClick={() => setShowModal(!showModal)}>
                 Join a Conference
             </button>

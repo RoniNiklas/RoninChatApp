@@ -2,8 +2,6 @@ import React, { useState } from "react"
 
 import JoinConvoForm from "../JoinConvoForm/JoinConvoForm"
 
-import "./JoinConvoButton.css"
-
 const JoinConvoButton = () => {
 
     const [showModal, setShowModal] = useState(false)
@@ -11,7 +9,7 @@ const JoinConvoButton = () => {
     return (
         <>
             <button
-                className="join-button"
+                className="front-button"
                 onClick={() => setShowModal(!showModal)}>
                 Join a Conversation
             </button>
