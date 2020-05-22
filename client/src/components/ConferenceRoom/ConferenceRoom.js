@@ -71,14 +71,16 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
             })
             openedSocket.on("CALL_MADE", async data => {
                 const user = remotesRef.current.filter(user => user.id === data.sender)[0]
-                const pc = user.pc
-                await pc.setRemoteDescription(
-                    new RTCSessionDescription(data.localDescription)
-                );
-                const answer = await pc.createAnswer()
-                await pc.setLocalDescription(new RTCSessionDescription(answer))
-                console.log("ANSWERING CALL FROM USER", user)
-                openedSocket.emit("ANSWER_CALL", { receiver: data.sender, sender: data.receiver, answer: answer })
+                if (data.localDescription) {
+                    const pc = user.pc
+                    await pc.setRemoteDescription(
+                        new RTCSessionDescription(data.localDescription)
+                    );
+                    const answer = await pc.createAnswer()
+                    await pc.setLocalDescription(new RTCSessionDescription(answer))
+                    console.log("ANSWERING CALL FROM USER", user)
+                    openedSocket.emit("ANSWER_CALL", { receiver: data.sender, sender: data.receiver, answer: answer })
+                }         
             })
             openedSocket.on("NEW_ICE", data => {
                 const user = remotesRef.current.filter(user => user.id === data.sender)[0]
@@ -157,14 +159,14 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
             localVideo.current.srcObject = streamCopy
             screenVideo.addEventListener('ended', () => {
                 console.log("DO SOMETHING")
+                const streamCopy = new MediaStream()
+                stream.getAudioTracks()[0] && streamCopy.addTrack(stream.getAudioTracks()[0])
+                stream.getVideoTracks()[0] && streamCopy.addTrack(oldVideo)
+                setStream(streamCopy)
+                localVideo.current.srcObject = streamCopy
             })
         } catch (err) {
             console.log("Error: " + err)
-            const streamCopy = new MediaStream()
-            stream.getAudioTracks()[0] && streamCopy.addTrack(stream.getAudioTracks()[0])
-            stream.getVideoTracks()[0] && streamCopy.addTrack(stream.getVideoTracks()[0])
-            setStream(streamCopy)
-            localVideo.current.srcObject = streamCopy
         }
     }
 
