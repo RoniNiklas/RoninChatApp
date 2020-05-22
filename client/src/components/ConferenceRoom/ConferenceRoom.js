@@ -159,7 +159,12 @@ const ConferenceRoom = ({ id, name, devices, password, setName, setPassword }) =
                 console.log("DO SOMETHING")
             })
         } catch (err) {
-            console.log("Error: " + err);
+            console.log("Error: " + err)
+            const streamCopy = new MediaStream()
+            stream.getAudioTracks()[0] && streamCopy.addTrack(stream.getAudioTracks()[0])
+            stream.getVideoTracks()[0] && streamCopy.addTrack(stream.getVideoTracks()[0])
+            setStream(streamCopy)
+            localVideo.current.srcObject = streamCopy
         }
     }
 

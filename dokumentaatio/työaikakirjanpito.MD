@@ -21,3 +21,5 @@
   conference-ikkunassa voi myös chatata, chatissa voi lähettää emojeja (spelling?), conferenceroom css asettelu on nyt suhtkoht. desktop valmis, joskaan ei toimi ollenkaan puhelinkoossa :C  
 17.4 => 8h => total = 80h   
   mute nappula mikrofonille ja kameralle, salasanasuojaus konferensseille, streamin yksinkertaistaminen, webrtc kanssa tappelua  
+25.4 => 4h => total = 84h
+  huono versio screen capturesta. koitin parantaa, mutta selaimen toiminta ei tunnu vastaavan spesifikaatiota addtrackien jne. osalta.
