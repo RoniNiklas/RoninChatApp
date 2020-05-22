@@ -1,0 +1,115 @@
+.conference-chat {
+    width: 33vw;
+}
+
+.conference-messages {
+    height: 65vh;
+    background: rgba(0,0,0,0.25);
+    overflow: auto;
+    scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+.conference-comment-form{
+    height: 20vh;
+}
+
+.anchor {
+    overflow-anchor: auto;
+}
+
+.form-control {
+    max-height: 14vh;
+}
+
+.form-label {
+    margin: 0.5em 1em;
+}
+
+textarea.form-control {
+    width: 90%;
+    margin: 0 5%;
+    height: 14vh;
+}
+
+.toast {
+    margin: 0.5em auto;
+    width: 90%;
+    max-width: 90%;    
+}
+
+.toast:first-child {
+    margin-top: 2.5em;
+}
+.toast:last-child {
+    margin-bottom: 2.5em;
+}
+
+.arrow-buttons {
+    float: right;
+    margin: 0.25em 0.25em;
+    padding: 0.5em;
+    background: transparent;
+    border: none;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.top {
+    top: 0;
+}
+
+.right {
+    right: 0;
+}
+
+.bottom {
+    bottom: 0
+}
+
+.left {
+    left: 0
+}
+
+.popped {
+    z-index: 100;
+}
+
+.arrow-button {
+    background: transparent;
+    border: none;
+    height: 2em;
+    width: 2em;
+}
+
+.emoji-mart {
+    position: fixed;
+    bottom: 5vh;
+    right: 5vw;
+}
+
+.conference-comment-form-button-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0 5%;
+    width: 90%
+}
+
+.send-comment-button {
+    height: 4vh;
+    padding: 0 0.5em;
+}
+
+.select-emoticon-button {
+    height: 4vh
+}
+
+.comment-box {
+    height: 25vh;
+}

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const cors = require('cors')
 const conversationRouter = require('./controllers/conversations')
+const conferenceRouter = require('./controllers/conference')
 
 const config = require('./config.js')
 
@@ -12,6 +13,7 @@ app.use(cors())
 
 app.use(bodyParser.json({limit: '10mb', extended: true}))
 app.use('/api/conversations', conversationRouter)
+app.use('/api/conference', conferenceRouter)
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(config.staticDir, 'index.html'))

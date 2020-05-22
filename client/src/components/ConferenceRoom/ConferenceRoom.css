@@ -1,0 +1,45 @@
+.minimized-wrapper {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 67vw;
+    height: 25vh;
+    overflow-y: auto;
+    scrollbar-width: none
+}
+
+.relative {
+    position:relative;
+}
+
+.pointless-place-holder {
+    width: 67vw;
+    height: 65vh;
+    display: flex;
+    background: rgba(0,0,0,0.5);
+}
+
+.singlevideo-wrapper {
+    display:flex;
+    flex-direction: column;
+    word-wrap: break-word;
+    margin: 1em;
+    margin-bottom: 0em;
+}
+
+.conference-wrapper {
+    display:flex;
+    flex-direction: row;
+}
+
+.videos-wrapper {
+    width: 67vw;
+}
+
+.conference-error {
+    position: fixed;
+    top: 11vh;
+    left: 33%;
+    right: 33%;
+    text-align: center;
+}

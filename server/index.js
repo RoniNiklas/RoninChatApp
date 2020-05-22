@@ -3,6 +3,7 @@ const http = require('http')
 const app = require('./app')
 const config = require('./config')
 const Conversation = require('./models/conversation')
+const conferenceService = require("./services/conference")
 
 mongoose
     .connect(config.dbUrl)
@@ -22,6 +23,7 @@ server.listen(config.port, () => {
 
 // socket.io code needs to be moved
 
+const idNameMap = {}
 io.on("connection", (socket) => {
     console.log("connected socket:", socket.request.connection.remoteAddress)
     socket.on("JOIN_ROOM", async (id) => {
@@ -57,8 +59,61 @@ io.on("connection", (socket) => {
         }
     })
     socket.on('disconnect', function () {
-        io.emit('user disconnected');
-    });
+        io.emit('user disconnected')
+    })
+    socket.on("JOIN_CONFERENCE", data => {
+        try {
+            if (conferenceService.verify(data.conferenceId, data.password)) {
+                socket.join("conference:" + data.conferenceId,
+                    () => console.log("Socket: " + socket.id + " joined conference:" + data.conferenceId)
+                )
+                idNameMap[socket.id] = data.name
+                const rooms = io.sockets.adapter.rooms["conference:" + data.conferenceId]
+                const sockets = rooms ? rooms.sockets : undefined
+                let users = sockets ? Object.keys(sockets).filter(user => user !== socket.id) : []
+                users = users.map(id => {
+                    return (
+                        {
+                            id: id,
+                            name: idNameMap[id]
+                        }
+                    )
+                })
+                socket.local.emit("SET_USERS", users)
+                socket.local.emit("SET_IDENTITY", socket.id)
+                users.forEach(user => socket.to(user.id).emit("NEW_USER", { id: socket.id, name: data.name }))
+            } else {
+                socket.local.emit("SET_ERROR", "Wrong password.")
+            }
+        } catch (error) {
+            error.name === "TypeError"
+                ? socket.local.emit("SET_ERROR", "A conference with this code does not exist.")
+                : socket.local.emit("SET_ERROR", "Server error: " + error)
+        }
+    })
+    socket.on('LEAVE_CONFERENCE', data => {
+        socket.leave("conference:" + data.conferenceId, () => {
+            console.log("SOCKET: " + socket.id + " HAS LEFT CONFERENCE " + data.conferenceId)
+        })
+        io.in("conference:" + data.conferenceId).emit("REMOVE_USER", socket.id)
+    })
+    socket.on("CALL", data => {
+        socket.to(data.receiver).emit("CALL_MADE", data)
+    })
+    socket.on("ANSWER_CALL", data => {
+        socket.to(data.receiver).emit("ANSWER_MADE", data)
+    })
+    socket.on("NEW_ICE", data => {
+        socket.to(data.receiver).emit("NEW_ICE", data)
+    })
+    socket.on("POST_CONFERENCE_COMMENT", async (id, comment) => {
+        try {
+            io.in("conference:" + id).emit("UPDATE_CONFERENCE", comment)
+        } catch (error) {
+            console.log("error: " + error)
+            socket.local.emit("SET_ERROR", "Server error: " + error)
+        }
+    })
 })
 
 

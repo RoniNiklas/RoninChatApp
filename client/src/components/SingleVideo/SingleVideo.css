@@ -1,0 +1,42 @@
+.minimized {
+    width: 32vw;
+    max-width: 256px;
+    height: 18vw;
+    max-height: 144px;
+    border: 2px solid rebeccapurple;
+    margin: 0 1em;
+}
+
+.minimized:hover {
+    cursor: pointer;
+}
+
+.focused {
+    width: 106vh;
+    max-width: 65vw;
+    height: 60vh;
+    max-height: 37vw;
+    border: 2px solid rebeccapurple;
+    margin: auto;
+}
+
+.focused:hover {
+    cursor: pointer;
+}
+
+.localVideo {
+    width: 32vw;
+    max-width: 256px;
+    height: 18vw;
+    max-height: 144px;
+    border: 2px solid green;
+    margin: 0 1em;
+}
+
+.localVideo:hover {
+    cursor: pointer;
+}
+
+.name-tag {
+    text-align: center;
+}
