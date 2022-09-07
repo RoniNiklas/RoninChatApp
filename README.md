@@ -3,6 +3,7 @@
 # Sovelluksen kuvaus:
 Tavoitteena websovellus, jolla käyttäjät voivat viestiä toistensa kanssa reaaliaikaisesti websockettia käyttäen. Teknologioina Node.JS, React, MongoDB, socket.io ja bootstrap.
 
+Huom. Videon jakaminen ei toimi täysin Conference-huoneissa. Paina Share Screen aloittaaksesi ruudun jaon, ja sammuta ruudunjako saadaksesi videon jaon toimimaan :D
 # Herokussa käytettävissä  
 
 [https://roninchatapp.herokuapp.com/](https://roninchatapp.herokuapp.com/) 
